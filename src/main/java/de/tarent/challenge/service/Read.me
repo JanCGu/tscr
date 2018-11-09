@@ -1,0 +1,11 @@
+The service package is the second of the core layers.
+It is allowed to have dependence to the domain and to the config layer.
+
+The Service layer is NOT allowed to have dependencies toward the display or
+persistence layer!
+
+It's purpuse is to allow a plugin architecture of Inbound and Outbound objects.
+Because it's plug-in based the service layer does not know of the plugins and 
+that's what the configuration layer is for. The plugin infastructure is based
+on Bob Martin's recommendation to delay any infastructural decision to the latest
+possible time.
