@@ -1,29 +1,36 @@
-package de.tarent.challenge.store.products;
+package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Objects;
 import java.util.Set;
 
-import static javax.persistence.GenerationType.AUTO;
+/**
+ * This is the Domain implementation of a Product. A Product is an enty object
+ * representing something which can be sold in a shop.
+ *
+ * @author Jan
+ */
+public class Product implements IProduct {
 
-@Entity
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = AUTO)
     private Long id;
 
+    /**
+     * The stock keeping unit. Basicly an alphanumerical identifier for electronic use.
+     * https://de.wikipedia.org/wiki/Artikelnummer
+     */
     private String sku;
 
+    /**
+     * The name of the product as it is called in the shop.
+     */
     private String name;
 
-    @ElementCollection
+    /**
+     * The European article number for this product.
+     * https://de.wikipedia.org/wiki/European_Article_Number
+     */
     private Set<String> eans;
 
     private Product() {
@@ -35,27 +42,34 @@ public class Product {
         this.eans = eans;
     }
 
+    @Override
     public String getSku() {
         return sku;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public Set<String> getEans() {
         return Sets.newHashSet(eans);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Product product = (Product) o;
-        return Objects.equals(id, product.id) &&
-                Objects.equals(sku, product.sku) &&
-                Objects.equals(name, product.name) &&
-                Objects.equals(eans, product.eans);
+        return Objects.equals(id, product.id)
+                && Objects.equals(sku, product.sku)
+                && Objects.equals(name, product.name)
+                && Objects.equals(eans, product.eans);
     }
 
     @Override

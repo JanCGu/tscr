@@ -1,5 +1,7 @@
-package de.tarent.challenge.store.products;
+package de.tarent.challenge.display;
 
+import de.tarent.challenge.domain.Product;
+import de.tarent.challenge.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,5 +1,6 @@
-package de.tarent.challenge.store.products;
+package de.tarent.challenge.service;
 
+import de.tarent.challenge.domain.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
