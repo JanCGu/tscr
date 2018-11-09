@@ -32,3 +32,4 @@ nbactions.xml
 pom.xml
 manifest.mf
 /nbproject/
+*.me~
