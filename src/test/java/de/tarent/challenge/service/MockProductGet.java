@@ -13,7 +13,7 @@ import javax.naming.ServiceUnavailableException;
  *
  * @author Jan
  */
-public class MockProductGet implements IProductGet {
+public class MockProductGet implements IProductGetter {
 
     public List<IProduct> Output;
     
