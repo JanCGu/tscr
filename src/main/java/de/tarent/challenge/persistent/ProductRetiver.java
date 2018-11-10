@@ -3,26 +3,49 @@ package de.tarent.challenge.persistent;
 import de.tarent.challenge.domain.IProduct;
 import java.util.List;
 import de.tarent.challenge.service.IProductGetter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Jan
  */
-public class ProductRetiver implements IProductGetter{
+public class ProductRetiver implements IProductGetter {
 
+    @Autowired
+    private IProductRepository productRepository;
+
+    public ProductRetiver() {
+
+    }
+
+    /**
+     * Returns all products from the database.
+     * @return 
+     */
     @Override
     public List<IProduct> All() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ProductDTOConverter.convertProductDTO(productRepository.findAll());
     }
 
+    /**
+     * Returns a list of products from the database having the same name as specified.
+     * @param name
+     * @return 
+     */
     @Override
     public List<IProduct> ByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ProductDTOConverter.convertProductDTO(productRepository.ByName(name));
     }
 
+    /**
+     * Returns the first occurance of the product in the database with the sku.
+     * As the sku is a unique identifier there should only be one!
+     * @param sku
+     * @return 
+     */
     @Override
     public IProduct BySku(String sku) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return productRepository.BySku(sku).stream().findFirst().get();
     }
-    
+
 }
