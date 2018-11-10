@@ -27,6 +27,11 @@ public class ProductModel implements IProduct{
 
     private ProductModel() {
     }
+    
+    public ProductModel(IProduct product)
+    {
+        this(product.getSku(),product.getName(),product.getEans());
+    }
 
     public ProductModel(String sku, String name, Set<String> eans) {
         this.sku = sku;
