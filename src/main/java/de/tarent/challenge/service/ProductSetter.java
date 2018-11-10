@@ -8,7 +8,7 @@ import javax.naming.ServiceUnavailableException;
  *
  * @author Jan
  */
-public class SetProductService implements IProductSetter {
+public class ProductSetter implements IProductSetter {
 
     private final IProductSetter persitanceProvider;
 
@@ -19,7 +19,7 @@ public class SetProductService implements IProductSetter {
      *
      * @param perstianceProvider
      */
-    public SetProductService(IProductSetter perstianceProvider) {
+    public ProductSetter(IProductSetter perstianceProvider) {
         this.persitanceProvider = perstianceProvider;
     }
 

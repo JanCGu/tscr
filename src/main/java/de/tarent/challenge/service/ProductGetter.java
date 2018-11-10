@@ -2,7 +2,6 @@ package de.tarent.challenge.service;
 
 import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.domain.Product;
-import java.util.ArrayList;
 import java.util.List;
 import javax.naming.ServiceUnavailableException;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author Jan
  */
 @Service
-public class GetProductService implements IProductGetter {
+public class ProductGetter implements IProductGetter {
 
     private final IProductGetter provider;
 
@@ -26,7 +25,7 @@ public class GetProductService implements IProductGetter {
      *
      * @param provider
      */
-    public GetProductService(IProductGetter provider) {
+    public ProductGetter(IProductGetter provider) {
         this.provider = provider;
     }
 
