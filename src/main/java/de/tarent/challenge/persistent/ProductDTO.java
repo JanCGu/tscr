@@ -6,34 +6,38 @@ import de.tarent.challenge.domain.IProduct;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
 import java.util.Set;
-
-import static javax.persistence.GenerationType.AUTO;
+import javax.persistence.Table;
 
 /**
- * This class implements the IProduct from the domain layer.
- * It's main purpase is to be used by the persitance layer.
- * Therefore it doubles as an ACL implementation.
+ * This class implements the IProduct from the domain layer. It's main purpase
+ * is to be used by the persitance layer. Therefore it doubles as an ACL
+ * implementation.
+ *
  * @author Jan
  */
 @Entity
-public class ProductDTO implements IProduct{
+@Table(name = "Product")
+public class ProductDTO implements IProduct {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
-    private Long id;
+    protected String sku;
 
-    private String sku;
-
-    private String name;
+    protected String name;
 
     @ElementCollection
-    private Set<String> eans;
+    protected Set<String> eans;
 
-    private ProductDTO() {
+    protected ProductDTO() {
+    }
+    
+    public ProductDTO(IProduct product)
+    {
+        sku = product.getSku();
+        name = product.getName();
+        eans = product.getEans();
     }
 
     public ProductDTO(String sku, String name, Set<String> eans) {
@@ -54,26 +58,32 @@ public class ProductDTO implements IProduct{
         return Sets.newHashSet(eans);
     }
 
+    /**
+     * A ProductDTO object is equal to an other one if it is bitewise the same
+     * or if the sku is the same.
+     * @param o this object is compared to o.
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ProductDTO product = (ProductDTO) o;
-        return Objects.equals(id, product.id) &&
-                Objects.equals(sku, product.sku) &&
-                Objects.equals(name, product.name) &&
-                Objects.equals(eans, product.eans);
+        return Objects.equals(sku, product.sku);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sku, name, eans);
+        return Objects.hash(sku, name, eans);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
                 .add("sku", sku)
                 .add("name", name)
                 .add("eans", eans)
