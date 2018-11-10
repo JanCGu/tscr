@@ -14,24 +14,22 @@ import java.util.Set;
  */
 public class Product implements IProduct {
 
-    private Long id;
-
     /**
      * The stock keeping unit. Basicly an alphanumerical identifier for electronic use.
      * https://de.wikipedia.org/wiki/Artikelnummer
      */
-    private String sku;
+    protected String sku;
 
     /**
      * The name of the product as it is called in the shop.
      */
-    private String name;
+    protected String name;
 
     /**
      * The European article number for this product.
      * https://de.wikipedia.org/wiki/European_Article_Number
      */
-    private Set<String> eans;
+    protected Set<String> eans;
 
     private Product() {
     }
@@ -76,21 +74,17 @@ public class Product implements IProduct {
             return false;
         }
         Product product = (Product) o;
-        return Objects.equals(id, product.id)
-                && Objects.equals(sku, product.sku)
-                && Objects.equals(name, product.name)
-                && Objects.equals(eans, product.eans);
+        return Objects.equals(sku, product.sku);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sku, name, eans);
+        return Objects.hash(sku, name, eans);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
                 .add("sku", sku)
                 .add("name", name)
                 .add("eans", eans)
