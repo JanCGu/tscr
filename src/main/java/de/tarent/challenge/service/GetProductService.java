@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
  * @author Jan
  */
 @Service
-public class GetProductService implements IProductGet {
+public class GetProductService implements IProductGetter {
 
-    private final IProductGet provider;
+    private final IProductGetter provider;
 
     /**
      * Initalises the Productservice with a provider where to retive the
@@ -26,7 +26,7 @@ public class GetProductService implements IProductGet {
      *
      * @param provider
      */
-    public GetProductService(IProductGet provider) {
+    public GetProductService(IProductGetter provider) {
         this.provider = provider;
     }
 

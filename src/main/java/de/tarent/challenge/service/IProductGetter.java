@@ -8,7 +8,7 @@ import javax.naming.ServiceUnavailableException;
  * Allows to get a IProduct.
  * @author Jan
  */
-public interface IProductGet {
+public interface IProductGetter {
     /**
      * Retrives all IProducts.
      * @return 

@@ -1,27 +1,23 @@
 package de.tarent.challenge.persistent;
 
 import de.tarent.challenge.domain.IProduct;
+import de.tarent.challenge.service.IProductSetter;
 import java.util.List;
-import de.tarent.challenge.service.IProductGetter;
+import javax.naming.ServiceUnavailableException;
 
 /**
- *
+ * Allows to create, update and delete IProducts in the database.
  * @author Jan
  */
-public class ProductRetiver implements IProductGetter{
+public class ProductStorer implements IProductSetter{
 
     @Override
-    public List<IProduct> All() {
+    public boolean Update(List<IProduct> toUpdate) throws ServiceUnavailableException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<IProduct> ByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public IProduct BySku(String sku) {
+    public boolean Delete(List<IProduct> toDelete) throws ServiceUnavailableException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
