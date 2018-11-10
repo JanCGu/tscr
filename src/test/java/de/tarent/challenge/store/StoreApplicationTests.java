@@ -29,6 +29,7 @@ public class StoreApplicationTests {
      * which are stored in the persitance layer.
      * 
      * This is an integration test
+     * @throws javax.naming.ServiceUnavailableException
      */
     @Test
     public void displayProducts() throws ServiceUnavailableException {
@@ -70,7 +71,7 @@ public class StoreApplicationTests {
         testNonExistens(test);
     }
     
-    private void testNonExistens(ProductModel model){
+    private void testNonExistens(ProductModel model) throws ServiceUnavailableException{
         ProductController pc = new ProductController();
         ProductModel dbPM = pc.retrieveProductBySku(model.getSku());
         assertNull("A test product still exists in the DB! ",dbPM);
