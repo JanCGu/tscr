@@ -33,27 +33,14 @@ public class GetProductService implements IProductGet {
     public List<IProduct> All() throws ServiceUnavailableException {
         if (provider == null)
             throw new ServiceUnavailableException("The provider service was not set!");
-        return convertProducts(provider.All());
-    }
-
-    /**
-     * Ensures that the List of IProducts which is passed in is actualy a
-     * Domain.Product
-     *
-     * @param in
-     * @return
-     */
-    private List<IProduct> convertProducts(List<IProduct> in) {
-        List<IProduct> ret = new ArrayList<>();
-        in.forEach(convert -> ret.add(new Product(convert)));
-        return ret;
+        return DomainProductConverter.Convert(provider.All());
     }
 
     @Override
     public List<IProduct> ByName(String name) throws ServiceUnavailableException{    
         if (provider == null)
             throw new ServiceUnavailableException("The provider service was not set!");
-        return convertProducts(provider.ByName(name));
+        return DomainProductConverter.Convert(provider.ByName(name));
     }
 
     @Override
