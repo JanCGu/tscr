@@ -15,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface IProductRepository extends JpaRepository<ProductDTO,String>{
 
-    @Query("SELECT product FROM Product WHERE product.name=(:name)")
-    public List<ProductDTO> ByName(@Param("name") String name);
     
-    @Query("SELECT product FROM Product WHERE product.sku=(:sku)")
-    public List<ProductDTO> BySku(@Param("sku") String sku);
+    public List<ProductDTO> findByName(String name);
+    
+    public List<ProductDTO> findBySku(String sku);
 }

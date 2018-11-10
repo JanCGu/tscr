@@ -4,7 +4,6 @@ import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.domain.Product;
 import java.util.List;
 import javax.naming.ServiceUnavailableException;
-import org.springframework.stereotype.Service;
 
 /**
  * This Service is basicly a proxy and a adapter to the persitance layer for
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
  *
  * @author Jan
  */
-@Service
 public class ProductGetter implements IProductGetter {
 
     private final IProductGetter provider;
@@ -30,9 +28,11 @@ public class ProductGetter implements IProductGetter {
     }
 
     /**
-     * Gets all Products from the persitance layer and returns a domain conform list.
+     * Gets all Products from the persitance layer and returns a domain conform
+     * list.
+     *
      * @return
-     * @throws ServiceUnavailableException 
+     * @throws ServiceUnavailableException
      */
     @Override
     public List<IProduct> All() throws ServiceUnavailableException {
@@ -41,11 +41,12 @@ public class ProductGetter implements IProductGetter {
     }
 
     /**
-     * Returns a product domain conform list of the products with the name from the 
-     * persitance layer.
+     * Returns a product domain conform list of the products with the name from
+     * the persitance layer.
+     *
      * @param name
      * @return
-     * @throws ServiceUnavailableException 
+     * @throws ServiceUnavailableException
      */
     @Override
     public List<IProduct> ByName(String name) throws ServiceUnavailableException {
@@ -54,11 +55,12 @@ public class ProductGetter implements IProductGetter {
     }
 
     /**
-     * Gets the product by sku from the persitance layer and returns a 
-     * product from the domain.
+     * Gets the product by sku from the persitance layer and returns a product
+     * from the domain.
+     *
      * @param sku
      * @return
-     * @throws ServiceUnavailableException 
+     * @throws ServiceUnavailableException
      */
     @Override
     public IProduct BySku(String sku) throws ServiceUnavailableException {
