@@ -60,7 +60,7 @@ public class GetProductService implements IProductGet {
     public IProduct BySku(String sku) throws ServiceUnavailableException{
         if (provider == null)
             throw new ServiceUnavailableException("The provider service was not set!");
-        return convertProduct(provider.BySku(sku));
+        return new Product(provider.BySku(sku));
     }
 
 }
