@@ -2,7 +2,7 @@ package de.tarent.challenge.config;
 
 import de.tarent.challenge.persistent.ProductRetiver;
 import de.tarent.challenge.service.IProductGet;
-import de.tarent.challenge.service.ProductService;
+import de.tarent.challenge.service.GetProductService;
 
 /**
  * A Factory allowing to get the ProductServices between layers.
@@ -18,6 +18,6 @@ public class ProductServiceFactory {
     public static IProductGet GetDBProductService()
     {
         IProductGet dbprovider = new ProductRetiver();
-        return new ProductService(dbprovider);
+        return new GetProductService(dbprovider);
     }
 }

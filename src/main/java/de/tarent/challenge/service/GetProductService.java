@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author Jan
  */
 @Service
-public class ProductService implements IProductGet {
+public class GetProductService implements IProductGet {
 
     private final IProductGet provider;
 
@@ -25,7 +25,7 @@ public class ProductService implements IProductGet {
      * Use the Factory in config for inatialisation!
      * @param provider
      */
-    public ProductService(IProductGet provider) {
+    public GetProductService(IProductGet provider) {
         this.provider = provider;
     }
 
@@ -45,18 +45,8 @@ public class ProductService implements IProductGet {
      */
     private List<IProduct> convertProducts(List<IProduct> in) {
         List<IProduct> ret = new ArrayList<>();
-        in.forEach(convert -> ret.add(convertProduct(convert)));
+        in.forEach(convert -> ret.add(new Product(convert)));
         return ret;
-    }
-
-    /**
-     * converts a IProduct to a domain Product.
-     *
-     * @param in the IProduct to be converted.
-     * @return
-     */
-    private Product convertProduct(IProduct in) {
-        return new Product(in.getSku(), in.getName(), in.getEans());
     }
 
     @Override

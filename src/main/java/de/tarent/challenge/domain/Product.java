@@ -35,6 +35,16 @@ public class Product implements IProduct {
 
     private Product() {
     }
+    
+     /**
+     * Converts a IProduct to a Product and inatialises it.
+     *
+     * @param in the IProduct to be converted.
+     * @return
+     */
+    public Product(IProduct in) {
+        this(in.getSku(), in.getName(), in.getEans());
+    }
 
     public Product(String sku, String name, Set<String> eans) {
         this.sku = sku;
