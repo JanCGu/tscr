@@ -34,7 +34,7 @@ public class ProductRetiver implements IProductGetter {
      */
     @Override
     public List<IProduct> ByName(String name) {
-        return ProductDTOConverter.convertProductDTO(productRepository.ByName(name));
+        return ProductDTOConverter.convertProductDTO(productRepository.findByName(name));
     }
 
     /**
@@ -45,7 +45,7 @@ public class ProductRetiver implements IProductGetter {
      */
     @Override
     public IProduct BySku(String sku) {
-        return productRepository.BySku(sku).stream().findFirst().get();
+        return productRepository.findBySku(sku).stream().findFirst().get();
     }
 
 }
