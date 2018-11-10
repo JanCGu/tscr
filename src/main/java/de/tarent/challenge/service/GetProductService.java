@@ -20,34 +20,57 @@ public class GetProductService implements IProductGet {
 
     /**
      * Initalises the Productservice with a provider where to retive the
-     * information. 
-     * 
+     * information.
+     *
      * Use the Factory in config for inatialisation!
+     *
      * @param provider
      */
     public GetProductService(IProductGet provider) {
         this.provider = provider;
     }
 
+    /**
+     * Gets all Products from the persitance layer and returns a domain conform list.
+     * @return
+     * @throws ServiceUnavailableException 
+     */
     @Override
     public List<IProduct> All() throws ServiceUnavailableException {
-        if (provider == null)
-            throw new ServiceUnavailableException("The provider service was not set!");
+        testProvider();
         return DomainProductConverter.Convert(provider.All());
     }
 
+    /**
+     * Returns a product domain conform list of the products with the name from the 
+     * persitance layer.
+     * @param name
+     * @return
+     * @throws ServiceUnavailableException 
+     */
     @Override
-    public List<IProduct> ByName(String name) throws ServiceUnavailableException{    
-        if (provider == null)
-            throw new ServiceUnavailableException("The provider service was not set!");
+    public List<IProduct> ByName(String name) throws ServiceUnavailableException {
+        testProvider();
         return DomainProductConverter.Convert(provider.ByName(name));
     }
 
+    /**
+     * Gets the product by sku from the persitance layer and returns a 
+     * product from the domain.
+     * @param sku
+     * @return
+     * @throws ServiceUnavailableException 
+     */
     @Override
-    public IProduct BySku(String sku) throws ServiceUnavailableException{
-        if (provider == null)
-            throw new ServiceUnavailableException("The provider service was not set!");
+    public IProduct BySku(String sku) throws ServiceUnavailableException {
+        testProvider();
         return new Product(provider.BySku(sku));
+    }
+
+    private void testProvider() throws ServiceUnavailableException {
+        if (provider == null) {
+            throw new ServiceUnavailableException("The provider service was not set!");
+        }
     }
 
 }
