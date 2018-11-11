@@ -66,7 +66,7 @@ public class ProductTest {
     }
     
     /**
-     * Creates an ArrayList of AssertPRoductTo with all test cases.
+     * Creates an ArrayList of AssertProduct with all test cases.
      * @return 
      */
      private static ArrayList<AssertProduct> createAsserts() {
@@ -78,11 +78,15 @@ public class ProductTest {
         eansWithEmpty.add("");
         
         toAssert.add(new AssertProduct("sku", "name",oneEan,false));
+        toAssert.add(new AssertProduct(null, "name",oneEan,true));
+        toAssert.add(new AssertProduct("sku", null,oneEan,true));
+        toAssert.add(new AssertProduct("sku", "name",null,true));
+        toAssert.add(new AssertProduct(null, null,null,true));
         toAssert.add(new AssertProduct("", "",new HashSet<>(),true));
         toAssert.add(new AssertProduct("sku", "name",new HashSet<>(),true));
         toAssert.add(new AssertProduct("sku", "",oneEan,true));
         toAssert.add(new AssertProduct("sku", "name",eansWithEmpty,true));
-        toAssert.add(new AssertProduct("sku", "name",null,true));
+        
 
         String keyboard = "qwertzuiopüasdfghjklöäyxcvbnm";
         keyboard += keyboard.toUpperCase();
