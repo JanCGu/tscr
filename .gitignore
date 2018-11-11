@@ -29,7 +29,6 @@ nbdist/
 /target/
 build.xml
 nbactions.xml
-pom.xml
 manifest.mf
 /nbproject/
 *.me~
