@@ -1,19 +1,18 @@
-package de.tarent.challenge.store;
+package de.tarent.challenge;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import de.tarent.challenge.display.ProductController;
 import de.tarent.challenge.display.ProductModel;
-import de.tarent.challenge.domain.IProduct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.naming.ServiceUnavailableException;
 import static org.junit.Assert.*;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 /**
  * This tests the features of the application.
@@ -21,7 +20,7 @@ import static org.junit.Assert.*;
  * @author Jan
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@DataJpaTest
 public class StoreApplicationTests {
 
     /**
@@ -47,6 +46,7 @@ public class StoreApplicationTests {
      * This is an integration test.
      * @throws ServiceUnavailableException 
      */
+    
     @Test
     public void storeProductTest() throws ServiceUnavailableException{
         Set<String> eans = new HashSet<>();

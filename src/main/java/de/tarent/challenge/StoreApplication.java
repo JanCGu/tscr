@@ -1,4 +1,4 @@
-package de.tarent.challenge.store;
+package de.tarent.challenge;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -22,7 +22,7 @@ public class StoreApplication {
         SpringApplication.run(StoreApplication.class, args);
 
     }
-
+/*
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
@@ -50,5 +50,5 @@ public class StoreApplication {
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
-    }
+    }*/
 }
