@@ -20,7 +20,7 @@ public class ProductModelTest {
     @Test
     public void ProductCreateTest() {
         ProductTest pt = new ProductTest();
-        pt.ProductCreateByStringTest();
-        pt.ProductCreateByIProductTest();
+        pt.ProductCreateBySettings();
+        pt.ProductCreateByIProduct();
     }
 }
