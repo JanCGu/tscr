@@ -7,7 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
+ * Allows to get Products form the database.
+ * 
  * @author Jan
  */
 @Transactional
@@ -16,18 +17,6 @@ public class ProductRetiver implements IProductGetter {
     @Autowired
     private IProductRepository productRepository;
     
-    /**
-     * Allows to set the used product repository. This is needed for unit testing.
-     * @param productRepository 
-     */
-    private ProductRetiver(IProductRepository productRepository){
-        this.productRepository=productRepository;
-    }
-
-    public ProductRetiver() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     /**
      * Returns all products from the database.
      * @return 
