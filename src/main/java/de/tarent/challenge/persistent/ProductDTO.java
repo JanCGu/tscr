@@ -15,6 +15,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import org.javamoney.moneta.Money;
 
 /**
  * This class implements the IProduct from the domain layer. It's main purpase
@@ -40,7 +41,7 @@ public class ProductDTO implements IProduct {
     protected Set<String> eans;
 
     @Basic(optional = true)
-    protected Integer price;
+    protected Money price;
 
     protected ProductDTO() {
     }
@@ -50,7 +51,7 @@ public class ProductDTO implements IProduct {
         setWithProduct(p);
     }
 
-    public ProductDTO(String sku, String name, Set<String> eans, Integer price) throws IllegalArgumentException {
+    public ProductDTO(String sku, String name, Set<String> eans, Money price) throws IllegalArgumentException {
         Product p = new Product(sku, name, eans, price);//Uses the functionality of the domain model to validate the input and create a dto.
         setWithProduct(p);
     }
@@ -112,7 +113,7 @@ public class ProductDTO implements IProduct {
     }
 
     @Override
-    public Integer getPrice() {
+    public Money getPrice() {
         return price;
     }
 }
