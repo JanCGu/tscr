@@ -19,7 +19,7 @@ public class ProductDTOTest {
 
     @Test
     public void createProductWithPropertiesTest() {
-        ProductTest.testCreationOfProduct(ta -> new ProductDTO(ta.sku, ta.name, ta.eans));
+        ProductTest.testCreationOfProduct(ta -> new ProductDTO(ta.sku, ta.name, ta.eans,ta.price));
     }
 
     @Test

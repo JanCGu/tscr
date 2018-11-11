@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.naming.ServiceUnavailableException;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.dao.DuplicateKeyException;
@@ -102,6 +103,7 @@ public class ProductControllerTest {
     public static ProductModel getTestProduct(String name) {
         Set<String> eans = new HashSet<>();
         eans.add("1234567890123");
-        return new ProductModel("testSKU", name, eans);
+        Money oneEur = Money.of(1.23, "EUR");
+        return new ProductModel("testSKU", name, eans,oneEur);
     }
 }
