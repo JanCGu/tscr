@@ -15,4 +15,6 @@ public interface IProduct {
 
     String getSku();
     
+    Integer getPrice();
+    
 }
