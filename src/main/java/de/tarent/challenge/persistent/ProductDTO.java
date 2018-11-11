@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -40,6 +41,7 @@ public class ProductDTO implements IProduct {
     @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
     protected Set<String> eans;
 
+    @Column(length=65335)//Blob
     @Basic(optional = true)
     protected Money price;
 
