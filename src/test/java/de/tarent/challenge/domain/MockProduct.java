@@ -1,6 +1,7 @@
 package de.tarent.challenge.domain;
 
 import java.util.Set;
+import org.javamoney.moneta.Money;
 
 /**
  * Allows to set sku,name and ean directly!
@@ -11,12 +12,14 @@ public class MockProduct implements IProduct{
     public String sku;
     public String name;
     public Set<String> eans;
+    public Money price;
     
-    public MockProduct(String sku, String name, Set<String> eans)
+    public MockProduct(String sku, String name, Set<String> eans, Money price)
     {
         this.sku=sku;
         this.name=name;
         this.eans=eans;
+        this.price = price;
     }
     
     @Override
@@ -32,6 +35,11 @@ public class MockProduct implements IProduct{
     @Override
     public String getSku() {
         return sku;
+    }
+
+    @Override
+    public Money getPrice() {
+        return price;
     }
     
 }

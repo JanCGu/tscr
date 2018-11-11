@@ -5,11 +5,11 @@
  */
 package de.tarent.challenge.domain;
 
-import com.google.common.base.MoreObjects;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.javamoney.moneta.Money;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ public class ProductTest {
      */
     @Test
     public void ProductCreateBySettings() {
-        testCreationOfProduct(ta -> new Product(ta.sku,ta.name,ta.eans));
+        testCreationOfProduct(ta -> new Product(ta.sku,ta.name,ta.eans,ta.price));
         
     }
     
@@ -93,22 +93,27 @@ public class ProductTest {
         eansWithEmpty.add("oneEntry");
         eansWithEmpty.add("");
         
-        toAssert.add(new AssertProduct("sku", "name",oneEan,false));
-        toAssert.add(new AssertProduct(null, "name",oneEan,true));
-        toAssert.add(new AssertProduct("sku", null,oneEan,true));
-        toAssert.add(new AssertProduct("sku", "name",null,true));
-        toAssert.add(new AssertProduct(null, null,null,true));
-        toAssert.add(new AssertProduct("", "",new HashSet<>(),true));
-        toAssert.add(new AssertProduct("sku", "name",new HashSet<>(),true));
-        toAssert.add(new AssertProduct("sku", "",oneEan,true));
-        toAssert.add(new AssertProduct("sku", "name",eansWithEmpty,true));
+        Money oneEur = Money.of(1.0, "EUR");
+        Money minusMoney = Money.of(-1.0, "EUR");
+        
+        toAssert.add(new AssertProduct("sku", "name",oneEan,null,false));
+        toAssert.add(new AssertProduct("sku", "name",oneEan,oneEur,false));
+        toAssert.add(new AssertProduct(null, "name",oneEan,oneEur,true));
+        toAssert.add(new AssertProduct("sku", null,oneEan,oneEur,true));
+        toAssert.add(new AssertProduct("sku", "name",null,oneEur,true));
+        toAssert.add(new AssertProduct(null, null,null,oneEur,true));
+        toAssert.add(new AssertProduct("", "",new HashSet<>(),oneEur,true));
+        toAssert.add(new AssertProduct("sku", "name",new HashSet<>(),oneEur,true));
+        toAssert.add(new AssertProduct("sku", "",oneEan,oneEur,true));
+        toAssert.add(new AssertProduct("sku", "name",eansWithEmpty,oneEur,true));
+        toAssert.add(new AssertProduct("sku", "name",oneEan,minusMoney,true));
         
 
         String keyboard = "qwertzuiopüasdfghjklöäyxcvbnm";
         keyboard += keyboard.toUpperCase();
         keyboard += "1234567890";
         keyboard += "!\"§$%&/()=?´`^°<>|,.-;:_+#*'~";
-        toAssert.add(new AssertProduct(keyboard, keyboard,oneEan,false));
+        toAssert.add(new AssertProduct(keyboard, keyboard,oneEan,oneEur,false));
         return toAssert;
     }
 }
