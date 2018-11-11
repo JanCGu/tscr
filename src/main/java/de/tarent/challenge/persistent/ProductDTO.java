@@ -86,16 +86,16 @@ public class ProductDTO implements IProduct {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass() != o.getClass() || sku== null) {
             return false;
         }
         ProductDTO product = (ProductDTO) o;
-        return Objects.equals(sku, product.sku);
+        return product.sku.equals(sku);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, eans);
+        return Objects.hash(sku);
     }
 
     @Override
