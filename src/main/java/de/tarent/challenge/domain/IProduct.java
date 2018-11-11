@@ -1,6 +1,7 @@
 package de.tarent.challenge.domain;
 
 import java.util.Set;
+import org.javamoney.moneta.Money;
 
 /**
  * Represents an Interface to Product.
@@ -15,6 +16,6 @@ public interface IProduct {
 
     String getSku();
     
-    Integer getPrice();
+    Money getPrice();
     
 }

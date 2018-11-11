@@ -2,10 +2,10 @@ package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import java.util.Objects;
 import java.util.Set;
+import org.javamoney.moneta.Money;
 
 /**
  * This is the Domain implementation of a Product. A Product is an enty object
@@ -39,7 +39,7 @@ public class Product implements IProduct {
     /**
      * Stores how much the procut costs. Can only be null or greater than 0.
      */
-    protected Integer price;
+    protected Money price;
 
     private Product() {
     }
@@ -68,7 +68,7 @@ public class Product implements IProduct {
 
     }
 
-    public Product(String sku, String name, Set<String> eans, Integer price) {
+    public Product(String sku, String name, Set<String> eans, Money price) {
         this.sku = checkNonEmpty(sku, "SKU may not be empty!"); //
         this.name = checkNonEmpty(name, "Name may not be empty!");
         this.eans = checkEans(eans);
@@ -81,11 +81,11 @@ public class Product implements IProduct {
      * @return returns toCheck if it is valid.
      * @throws IllegalArgumentException throws an error if toCheck is invalid.
      */
-    private Integer checkAllowdPrice(Integer toCheck) throws IllegalArgumentException {
+    private Money checkAllowdPrice(Money toCheck) throws IllegalArgumentException {
         if (toCheck == null) {
             return null;
         }
-        if(toCheck<=0)
+        if(toCheck.isNegativeOrZero())
             throw new IllegalArgumentException("The price can ether be null or has to be greater than 0.");
         return toCheck;
     }
@@ -184,7 +184,7 @@ public class Product implements IProduct {
      * @return 
      */
     @Override
-    public Integer getPrice() {
+    public Money getPrice() {
         return price;
     }
 }
