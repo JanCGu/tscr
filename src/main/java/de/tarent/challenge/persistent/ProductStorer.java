@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.service.IProductSetter;
 import java.util.List;
+import java.util.Set;
 import javax.naming.ServiceUnavailableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +22,12 @@ public class ProductStorer implements IProductSetter {
     private IProductRepository productRepository;
 
     @Override
-    public boolean Update(List<IProduct> toUpdate) throws ServiceUnavailableException {
+    public boolean Update(Set<IProduct> toUpdate) throws ServiceUnavailableException {
         return doOperation(toUpdate, list -> productRepository.saveAll(list));
     }
 
     @Override
-    public boolean Delete(List<IProduct> toDelete) throws ServiceUnavailableException {
+    public boolean Delete(Set<IProduct> toDelete) throws ServiceUnavailableException {
         return doOperation(toDelete, list -> {
             list.forEach(product -> productRepository.delete(product));
             return list;
@@ -42,12 +43,12 @@ public class ProductStorer implements IProductSetter {
      * @return Returns true if the output of doOperation is greater than 0 or if
      * reference has no elements.
      */
-    private boolean doOperation(List<IProduct> reference, Function<List<ProductDTO>, Iterable<ProductDTO>> doOperation) {
+    private boolean doOperation(Set<IProduct> reference, Function<Set<ProductDTO>, Iterable<ProductDTO>> doOperation) {
         if (reference.size() == 0) {
             return true;
         }
 
-        List<ProductDTO> converted = ProductDTOConverter.convertIProduct(reference);
+        Set<ProductDTO> converted = ProductDTOConverter.convertIProduct(reference);
         Iterable<ProductDTO> ret = doOperation.apply(converted);
         return Lists.newArrayList(ret).size() > 0;
     }
