@@ -1,8 +1,6 @@
 package de.tarent.challenge.display;
 
-import de.tarent.challenge.config.ProductServiceFactory;
 import de.tarent.challenge.domain.IProduct;
-import de.tarent.challenge.domain.Product;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.ServiceUnavailableException;
@@ -14,77 +12,71 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import de.tarent.challenge.service.IProductGetter;
 import de.tarent.challenge.service.IProductSetter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
+@Controller
 @RequestMapping("/products")
-public class ProductController {
+public class ProductController implements IProductController {
 
-    public ProductController() {
+    @Autowired
+    private IProductGetter productGetter;
+    @Autowired
+    private IProductSetter productSetter;
+
+    public ProductController(IProductGetter productGetterService, IProductSetter productSetterService) {
+        productGetter = productGetterService;
+        productSetter = productSetterService;
     }
 
-    /**
-     * Returns an iterable "list" of ProducModels, which represents the products.
-     * Gets all products available.
-     * @return
-     * @throws ServiceUnavailableException 
-     */
+    protected ProductController() {
+    }
+
     @GetMapping
+    @Override
     public Iterable<ProductModel> retrieveProducts() throws ServiceUnavailableException {
-        IProductGetter productService = ProductServiceFactory.GetProductGetter();
-
-        return convert(productService.All());
+        return convert(productGetter.All());
 
     }
 
-    /**
-     * Returns a ProductModel of a Product by its sku. This product comes from the
-     * persitance layer.
-     * @param sku
-     * @return
-     * @throws ServiceUnavailableException 
-     */
     @GetMapping("/{sku}")
+    @Override
     public ProductModel retrieveProductBySku(@PathVariable String sku) throws ServiceUnavailableException {
-        IProductGetter productService = ProductServiceFactory.GetProductGetter();
-        
-        return new ProductModel(productService.BySku(sku));
+        IProduct ret = productGetter.BySku(sku);
+        if(ret == null)
+            return null;
+        return new ProductModel(ret);
     }
-    
-    /**
-     * the products in the toUpdate are stored in the perstiance layer.
-     * This means that they are eather created, if they do not exits or are updated
-     * if they do exist.
-     * 
-     * @param toUpdate
-     * @return Returns true if the update was sucessful.
-     * @throws ServiceUnavailableException 
-     */
+
     @PostMapping
-    public boolean updateProducts(@RequestBody Iterable<ProductModel> toUpdate) throws ServiceUnavailableException{
-         IProductSetter productService = ProductServiceFactory.GetProductSetter();
-         return productService.Update(convert(toUpdate));
+    @Override
+    public boolean updateProducts(@RequestBody Iterable<ProductModel> toUpdate) throws ServiceUnavailableException {
+        if(toUpdate == null)
+            return true;
+        return productSetter.Update(convert(toUpdate));
     }
-    
-    /**
-     * Deletes the products from the storage. If the product does not exist,it does nothing.
-     * @param toUpdate
-     * @return True if the operation was sucessfull.
-     * @throws ServiceUnavailableException 
-     */
+
     @DeleteMapping
-    public boolean deleteProducts(@RequestBody Iterable<ProductModel> toUpdate) throws ServiceUnavailableException{
-         IProductSetter productService = ProductServiceFactory.GetProductSetter();
-         return productService.Delete(convert(toUpdate));
+    @Override
+    public boolean deleteProducts(@RequestBody Iterable<ProductModel> toDelete) throws ServiceUnavailableException {
+        if(toDelete == null)
+            return true;
+        return productSetter.Delete(convert(toDelete));
     }
-    
-    private List<IProduct> convert(Iterable<ProductModel> toConvert){
+
+    private List<IProduct> convert(Iterable<ProductModel> toConvert) {
+        if(toConvert == null)
+            return null;
         List<IProduct> ret = new ArrayList<>();
         toConvert.forEach(ret::add);
         return ret;
-    }   
+    }
 
     private Iterable<ProductModel> convert(List<IProduct> toConvert) {
+        if(toConvert== null)
+            return null;
         ArrayList<ProductModel> ret = new ArrayList<>();
         toConvert.forEach(product -> ret.add(new ProductModel(product)));
         return ret;
