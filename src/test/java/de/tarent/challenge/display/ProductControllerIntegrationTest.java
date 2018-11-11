@@ -1,18 +1,17 @@
-package de.tarent.challenge;
+package de.tarent.challenge.display;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
-import de.tarent.challenge.display.ProductController;
-import de.tarent.challenge.display.ProductModel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.naming.ServiceUnavailableException;
 import static org.junit.Assert.*;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * This tests the features of the application.
@@ -20,19 +19,21 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
  * @author Jan
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
-public class StoreApplicationTests {
+@SpringBootTest
+public class ProductControllerIntegrationTest {
 
+     @Autowired
+    private ProductController pc;
+    
     /**
      * Tests if it is possible to get Products from the Display layer,
      * which are stored in the persitance layer.
      * 
-     * This is an integration test
+     * This is an integration test. Tests the feature specified in Issue #2.
      * @throws javax.naming.ServiceUnavailableException
      */
     @Test
     public void displayProducts() throws ServiceUnavailableException {
-        ProductController pc = new ProductController();
         List<ProductModel> getAll =Lists.newArrayList(pc.retrieveProducts());
         
         getAll.forEach(product -> System.out.println(product));
@@ -43,7 +44,7 @@ public class StoreApplicationTests {
      * Tests if it is possible to create, update and delete from the Display layer
      * in the persitance layer.
      * 
-     * This is an integration test.
+     * This is an integration test. Tests the feature specified in Issue #2.
      * @throws ServiceUnavailableException 
      */
     
@@ -52,7 +53,6 @@ public class StoreApplicationTests {
         Set<String> eans = new HashSet<>();
         eans.add("1234567890123");
         ProductModel test = new ProductModel("testSKU","TestProduct",eans);
-        ProductController pc = new ProductController();
         
         //should not exist
         testNonExistens(test);
@@ -69,10 +69,9 @@ public class StoreApplicationTests {
         //delete
         assertTrue("The model could not be deleted!",pc.deleteProducts(deleteList));
         testNonExistens(test);
-    }
+    }   
     
     private void testNonExistens(ProductModel model) throws ServiceUnavailableException{
-        ProductController pc = new ProductController();
         ProductModel dbPM = pc.retrieveProductBySku(model.getSku());
         assertNull("A test product still exists in the DB! ",dbPM);
     }
@@ -88,7 +87,6 @@ public class StoreApplicationTests {
     {
         ArrayList<ProductModel> list = new ArrayList<>();
         list.add(model);
-        ProductController pc = new ProductController();
         assertTrue("The model could not be updated!",pc.updateProducts(list));
         ProductModel dbPM = pc.retrieveProductBySku(model.getSku());
         assertEquals("The perstiance product and the input product are diffrent.",dbPM, model);
