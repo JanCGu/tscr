@@ -2,6 +2,7 @@ package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import java.util.Objects;
 import java.util.Set;
@@ -106,22 +107,32 @@ public class Product implements IProduct {
     public Set<String> getEans() {
         return Sets.newHashSet(eans);
     }
+    
+    public static String getIdentifierName(){
+        return "SKU";
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null ||sku==null ) {
             return false;
         }
         Product product = (Product) o;
-        return Objects.equals(sku, product.sku);
+        
+        return product.sku.equals(sku);
+    }
+    
+    public boolean equals(Product p)
+    {
+        return p == null ? sku == null : p.sku.equals(sku);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, eans);
+        return Objects.hash(sku);
     }
 
     @Override

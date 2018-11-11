@@ -44,6 +44,22 @@ public class ProductTest {
        testCreationOfProduct(ta -> new Product(ta.mockproduct));  
     }
     
+    @Test
+    public void equalTest()
+    {
+        Set<String> e1 = new HashSet<>();
+        e1.add("e1");
+        Product p1 = new Product("sku","n1",e1);
+        
+        Set<String> e2 = new HashSet<>();
+        e2.add("e2");
+        Product p2 = new Product("sku","n2",e2);
+        assertTrue(p1.equals(p2));
+        
+        Product p3 = new Product("sku2","n1",e1);
+        assertFalse(p1.equals(p3));
+    }
+    
     /**
      * Allows to test the creation of a generic product according to the
      * expected behavior any product should display.
