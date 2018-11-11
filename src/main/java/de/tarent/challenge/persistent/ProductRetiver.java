@@ -15,6 +15,14 @@ public class ProductRetiver implements IProductGetter {
 
     @Autowired
     private IProductRepository productRepository;
+    
+    /**
+     * Allows to set the used product repository. This is needed for unit testing.
+     * @param productRepository 
+     */
+    private ProductRetiver(IProductRepository productRepository){
+        this.productRepository=productRepository;
+    }
 
     /**
      * Returns all products from the database.
