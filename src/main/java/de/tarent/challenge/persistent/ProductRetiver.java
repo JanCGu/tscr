@@ -3,13 +3,14 @@ package de.tarent.challenge.persistent;
 import de.tarent.challenge.domain.IProduct;
 import java.util.List;
 import de.tarent.challenge.service.IProductGetter;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Jan
  */
-
+@Transactional
 public class ProductRetiver implements IProductGetter {
 
     @Autowired
@@ -21,7 +22,11 @@ public class ProductRetiver implements IProductGetter {
      */
     @Override
     public List<IProduct> All() {
-        return ProductDTOConverter.convertProductDTO(productRepository.findAll());
+        List<ProductDTO> ret = productRepository.findAll();
+        if(ret.size()==0)
+            return null;
+        
+        return ProductDTOConverter.convertProductDTO(ret);
     }
 
     /**
