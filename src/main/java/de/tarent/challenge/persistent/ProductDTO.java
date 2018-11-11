@@ -10,11 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.CollectionTable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * This class implements the IProduct from the domain layer. It's main purpase
@@ -28,8 +28,7 @@ import javax.persistence.Transient;
 public class ProductDTO implements IProduct {
 
     /**
-     * Only one product with  a sku is allowed to exist. 
-     * Issue #1
+     * Only one product with a sku is allowed to exist. Issue #1
      */
     @Id
     protected String sku;
@@ -39,38 +38,41 @@ public class ProductDTO implements IProduct {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
     protected Set<String> eans;
-    
-    
+
+    @Basic(optional = true)
+    protected Integer price;
 
     protected ProductDTO() {
     }
-    
-    public ProductDTO(IProduct product)
-    {
+
+    public ProductDTO(IProduct product) {
         Product p = new Product(product);//Uses the functionality of the domain model to validate the input and create a dto.
         setWithProduct(p);
     }
 
-    public ProductDTO(String sku, String name, Set<String> eans) throws IllegalArgumentException{
-        Product p = new Product(sku,name,eans);//Uses the functionality of the domain model to validate the input and create a dto.
+    public ProductDTO(String sku, String name, Set<String> eans, Integer price) throws IllegalArgumentException {
+        Product p = new Product(sku, name, eans, price);//Uses the functionality of the domain model to validate the input and create a dto.
         setWithProduct(p);
     }
 
-    private void setWithProduct(Product p) throws IllegalArgumentException
-    {
+    private void setWithProduct(Product p) throws IllegalArgumentException {
         this.sku = p.getSku();
         this.name = p.getName();
         this.eans = p.getEans();
+        this.price = p.getPrice();
     }
 
+    @Override
     public String getSku() {
         return sku;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public Set<String> getEans() {
         return Sets.newHashSet(eans);
     }
@@ -78,6 +80,7 @@ public class ProductDTO implements IProduct {
     /**
      * A ProductDTO object is equal to an other one if it is bitewise the same
      * or if the sku is the same.
+     *
      * @param o this object is compared to o.
      * @return
      */
@@ -86,7 +89,7 @@ public class ProductDTO implements IProduct {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass() || sku== null) {
+        if (o == null || getClass() != o.getClass() || sku == null) {
             return false;
         }
         ProductDTO product = (ProductDTO) o;
@@ -104,6 +107,12 @@ public class ProductDTO implements IProduct {
                 .add("sku", sku)
                 .add("name", name)
                 .add("eans", eans)
+                .add("price", price)
                 .toString();
+    }
+
+    @Override
+    public Integer getPrice() {
+        return price;
     }
 }
