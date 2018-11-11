@@ -6,10 +6,7 @@
 package de.tarent.challenge.persistent;
 
 import de.tarent.challenge.domain.*;
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -21,27 +18,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ProductDTOTest {
 
     @Test
-    public void ProductCreateTest() {
-        ProductDTO nullProduct = new ProductDTO(null, null, null);
-        assertNull(nullProduct.getSku());
-        assertNull(nullProduct.getName());
-        assertNull(nullProduct.getSku());
-        
-        Set<String> emptyEANs = new HashSet<String>();
-        testProductCreation("sku","name",emptyEANs);
-        testProductCreation("","",emptyEANs);
-        
-        String keyboard = "qwertzuiopüasdfghjklöäyxcvbnm";
-        keyboard += keyboard.toUpperCase();
-        keyboard +="1234567890";
-        keyboard+="!\"§$%&/()=?´`^°<>|,.-;:_+#*'~";
-        testProductCreation(keyboard,keyboard,emptyEANs);
+    public void createProductWithPropertiesTest() {
+        ProductTest.testCreationOfProduct(ta -> new ProductDTO(ta.sku, ta.name, ta.eans));
     }
 
-    
-    private void testProductCreation(String sku, String name, Set<String> eans) {
-        ProductDTO p = new ProductDTO(sku, name, eans);
-        assertSame(p.getSku(), sku);
-        assertSame(p.getName(), name);
+    @Test
+    public void createProductWithIProductTest() {
+        ProductTest.testCreationOfProduct(ta -> new ProductDTO(ta.mockproduct));
     }
+
 }

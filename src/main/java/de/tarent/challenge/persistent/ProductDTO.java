@@ -3,6 +3,7 @@ package de.tarent.challenge.persistent;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
 import de.tarent.challenge.domain.IProduct;
+import de.tarent.challenge.domain.Product;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * This class implements the IProduct from the domain layer. It's main purpase
@@ -25,6 +27,10 @@ import javax.persistence.Table;
 @Table(name = "Product")
 public class ProductDTO implements IProduct {
 
+    /**
+     * Only one product with  a sku is allowed to exist. 
+     * Issue #1
+     */
     @Id
     protected String sku;
 
@@ -33,21 +39,28 @@ public class ProductDTO implements IProduct {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
     protected Set<String> eans;
+    
+    
 
     protected ProductDTO() {
     }
     
     public ProductDTO(IProduct product)
     {
-        sku = product.getSku();
-        name = product.getName();
-        eans = product.getEans();
+        Product p = new Product(product);//Uses the functionality of the domain model to validate the input and create a dto.
+        setWithProduct(p);
     }
 
-    public ProductDTO(String sku, String name, Set<String> eans) {
-        this.sku = sku;
-        this.name = name;
-        this.eans = eans;
+    public ProductDTO(String sku, String name, Set<String> eans) throws IllegalArgumentException{
+        Product p = new Product(sku,name,eans);//Uses the functionality of the domain model to validate the input and create a dto.
+        setWithProduct(p);
+    }
+
+    private void setWithProduct(Product p) throws IllegalArgumentException
+    {
+        this.sku = p.getSku();
+        this.name = p.getName();
+        this.eans = p.getEans();
     }
 
     public String getSku() {
