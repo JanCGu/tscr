@@ -16,13 +16,12 @@ import org.springframework.context.annotation.Configuration;
 public class ProductSetterConfiguration {
 
     /**
-     * Returns a IProductSetter with acces to a perstiant storage.
+     * Returns a IProductSetter with access to a perstiant storage.
      *
      * @return
      */
     @Bean
     public static IProductSetter getIProductSetter() {
         return new ProductStorer();
-
     }
 }
