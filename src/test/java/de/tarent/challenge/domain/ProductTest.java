@@ -5,9 +5,11 @@
  */
 package de.tarent.challenge.domain;
 
+import com.google.common.base.MoreObjects;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,68 +23,68 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ProductTest {
 
     /**
-     * Tests the functionaly to create a domain Product through Strings.
+     * Tests the functionality to create a domain Product by sku, name and eans.
+     * 
+     * See Issue #1.
      */
     @Test
-    public void ProductCreateByStringTest() {
-        testProduct(new Product(null, null, null), createAsserts());
+    public void ProductCreateBySettings() {
+        generalCreationTestProcedure(ta -> new Product(ta.sku,ta.name,ta.eans));
+        
     }
-
-    private ArrayList<AssertProductTo> createAsserts() {
-        ArrayList<AssertProductTo> toAssert = new ArrayList<>();
-        toAssert.add(new AssertProductTo("sku", "name"));
-        toAssert.add(new AssertProductTo("", ""));
+    
+    /**
+     * Tests the functionality to create a domain Product by an IProduct.
+     * 
+     * See Issue #1.
+     * @param create
+     */
+    @Test
+    public void ProductCreateByIProduct(){
+       generalCreationTestProcedure(ta -> new Product(ta.mockproduct));  
+    }
+    
+    private void generalCreationTestProcedure(Consumer<assertProduct> create){
+        ArrayList<assertProduct> toAssert = createAsserts();
+        toAssert.forEach(ta -> {
+            try
+            {
+                System.out.println(ta);
+                create.accept(ta);
+                assertFalse(ta.expectedToFail);
+            }
+            catch(IllegalArgumentException ex)
+            {
+                assertTrue(ta.expectedToFail);
+            }
+        });
+    }
+    
+    /**
+     * Creates an ArrayList of AssertPRoductTo with all test cases.
+     * @return 
+     */
+     private ArrayList<assertProduct> createAsserts() {
+        ArrayList<assertProduct> toAssert = new ArrayList<>();
+        Set<String> oneEan = new HashSet<>();
+        oneEan.add("oneEntry");
+        Set<String> eansWithEmpty = new HashSet<>();
+        eansWithEmpty.add("oneEntry");
+        eansWithEmpty.add("");
+        
+        toAssert.add(new assertProduct("sku", "name",oneEan,false));
+        toAssert.add(new assertProduct("", "",new HashSet<>(),true));
+        toAssert.add(new assertProduct("sku", "name",new HashSet<>(),true));
+        toAssert.add(new assertProduct("sku", "",oneEan,true));
+        toAssert.add(new assertProduct("sku", "name",eansWithEmpty,true));
+        toAssert.add(new assertProduct("sku", "name",null,true));
 
         String keyboard = "qwertzuiopüasdfghjklöäyxcvbnm";
         keyboard += keyboard.toUpperCase();
         keyboard += "1234567890";
         keyboard += "!\"§$%&/()=?´`^°<>|,.-;:_+#*'~";
+        toAssert.add(new assertProduct(keyboard, keyboard,oneEan,false));
         return toAssert;
-    }
-
-    /**
-     * Tests the functionality to create a domain Product by an IProduct.
-     */
-    @Test
-    public void ProductCreateByIProductTest() {
-        ArrayList<AssertProductTo> toAssert = createAsserts();
-        toAssert.forEach(ta -> {
-            PassThroughProduct ptp = new PassThroughProduct(
-                    ta.name,
-                    ta.sku,
-                    ta.eans);
-            ta.product = new Product(ptp);
-        });
-
-        IProduct nullIP = new Product(null, null, null);
-
-        try
-        {
-            Product p = new Product(nullIP);
-            assertTrue("this should not work!",true);
-        }
-        catch(NullPointerException ex)
-        {
-            assertTrue(true);
-        }
-        
-        testProduct(new Product(null, null, null), toAssert);
-    }
-
-    private void testProduct(Product nullProduct, ArrayList<AssertProductTo> additonal) {
-        assertNullProduct(nullProduct);
-        additonal.forEach(assertto -> assertto.assertProduct());
-    }
-
-    private void assertNullProduct(Product nullProduct) {
-        assertNull(nullProduct.getSku());
-        assertNull(nullProduct.getName());
-        assertNull(nullProduct.getSku());
-    }
-
-    private void testProductCreation(String sku, String name, Set<String> eans) {
-        Product p = new Product(sku, name, eans);
-
     }
 }
 
@@ -91,49 +93,30 @@ public class ProductTest {
  *
  * @author Jan
  */
-class AssertProductTo {
+class assertProduct {
 
-    public Product product;
+    public MockProduct mockproduct;
     public String sku;
     public String name;
     public Set<String> eans;
     public boolean expectedToFail;
-
-    /**
-     * Product will be created based on sku and name. The eans will be an empty
-     * HashSet<String>.
-     *
-     * @param sku
-     * @param name
-     */
-    public AssertProductTo(String sku, String name) {
-        this(sku, name, new HashSet<>());
-    }
-
-    public AssertProductTo(String sku, String name, Set<String> eans) {
+    
+    public assertProduct(String sku, String name, Set<String> eans, boolean expectedToFail) {
         this.sku = sku;
         this.name = name;
         this.eans = eans;
-        product = new Product(sku, name, eans);
+        this.expectedToFail=expectedToFail;
+        mockproduct = new MockProduct(sku, name, eans);
+        
     }
-
-    /**
-     * Compares the stored product to the stored sku,name and eans. If
-     * expectedToFail is true the comparision must be false in order for the
-     * assert to work.
-     */
-    public void assertProduct() {
-        boolean equal = true;
-
-        equal &= product.getSku().equals(sku);
-        equal &= product.getName().equals(name);
-        equal &= product.getEans() == eans;
-
-        if (expectedToFail) {
-            assertTrue(equal);
-        } else {
-            assertFalse(equal);
-        }
-
+    
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("sku", sku)
+                .add("name", name)
+                .add("eans", eans)
+                .add("expectedToFail", expectedToFail)
+                .toString();
     }
 }

@@ -24,6 +24,10 @@ public class ProductRetiver implements IProductGetter {
         this.productRepository=productRepository;
     }
 
+    public ProductRetiver() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * Returns all products from the database.
      * @return 
