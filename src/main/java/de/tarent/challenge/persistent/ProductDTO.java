@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CollectionTable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -27,7 +30,8 @@ public class ProductDTO implements IProduct {
 
     protected String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
     protected Set<String> eans;
 
     protected ProductDTO() {

@@ -9,14 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Jan
  */
+
 public class ProductRetiver implements IProductGetter {
 
     @Autowired
     private IProductRepository productRepository;
-
-    public ProductRetiver() {
-
-    }
 
     /**
      * Returns all products from the database.
@@ -41,11 +38,14 @@ public class ProductRetiver implements IProductGetter {
      * Returns the first occurance of the product in the database with the sku.
      * As the sku is a unique identifier there should only be one!
      * @param sku
-     * @return 
+     * @return The IProduct might be null if no matching Product was found.
      */
     @Override
     public IProduct BySku(String sku) {
-        return productRepository.findBySku(sku).stream().findFirst().get();
+        List<ProductDTO> rets = productRepository.findBySku(sku);
+        if(rets.size() == 0)
+            return null;
+        return rets.stream().findFirst().get();
     }
 
 }
