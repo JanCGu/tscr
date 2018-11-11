@@ -29,7 +29,7 @@ public class ProductTest {
      */
     @Test
     public void ProductCreateBySettings() {
-        generalCreationTestProcedure(ta -> new Product(ta.sku,ta.name,ta.eans));
+        testCreationOfProduct(ta -> new Product(ta.sku,ta.name,ta.eans));
         
     }
     
@@ -41,11 +41,16 @@ public class ProductTest {
      */
     @Test
     public void ProductCreateByIProduct(){
-       generalCreationTestProcedure(ta -> new Product(ta.mockproduct));  
+       testCreationOfProduct(ta -> new Product(ta.mockproduct));  
     }
     
-    private void generalCreationTestProcedure(Consumer<assertProduct> create){
-        ArrayList<assertProduct> toAssert = createAsserts();
+    /**
+     * Allows to test the creation of a generic product according to the
+     * expected behavior any product should display.
+     * @param create 
+     */
+    public static void testCreationOfProduct(Consumer<AssertProduct> create){
+        ArrayList<AssertProduct> toAssert = createAsserts();
         toAssert.forEach(ta -> {
             try
             {
@@ -64,59 +69,27 @@ public class ProductTest {
      * Creates an ArrayList of AssertPRoductTo with all test cases.
      * @return 
      */
-     private ArrayList<assertProduct> createAsserts() {
-        ArrayList<assertProduct> toAssert = new ArrayList<>();
+     private static ArrayList<AssertProduct> createAsserts() {
+        ArrayList<AssertProduct> toAssert = new ArrayList<>();
         Set<String> oneEan = new HashSet<>();
         oneEan.add("oneEntry");
         Set<String> eansWithEmpty = new HashSet<>();
         eansWithEmpty.add("oneEntry");
         eansWithEmpty.add("");
         
-        toAssert.add(new assertProduct("sku", "name",oneEan,false));
-        toAssert.add(new assertProduct("", "",new HashSet<>(),true));
-        toAssert.add(new assertProduct("sku", "name",new HashSet<>(),true));
-        toAssert.add(new assertProduct("sku", "",oneEan,true));
-        toAssert.add(new assertProduct("sku", "name",eansWithEmpty,true));
-        toAssert.add(new assertProduct("sku", "name",null,true));
+        toAssert.add(new AssertProduct("sku", "name",oneEan,false));
+        toAssert.add(new AssertProduct("", "",new HashSet<>(),true));
+        toAssert.add(new AssertProduct("sku", "name",new HashSet<>(),true));
+        toAssert.add(new AssertProduct("sku", "",oneEan,true));
+        toAssert.add(new AssertProduct("sku", "name",eansWithEmpty,true));
+        toAssert.add(new AssertProduct("sku", "name",null,true));
 
         String keyboard = "qwertzuiopüasdfghjklöäyxcvbnm";
         keyboard += keyboard.toUpperCase();
         keyboard += "1234567890";
         keyboard += "!\"§$%&/()=?´`^°<>|,.-;:_+#*'~";
-        toAssert.add(new assertProduct(keyboard, keyboard,oneEan,false));
+        toAssert.add(new AssertProduct(keyboard, keyboard,oneEan,false));
         return toAssert;
     }
 }
 
-/**
- * Helper class to create a Product based on the sku, name and eans.
- *
- * @author Jan
- */
-class assertProduct {
-
-    public MockProduct mockproduct;
-    public String sku;
-    public String name;
-    public Set<String> eans;
-    public boolean expectedToFail;
-    
-    public assertProduct(String sku, String name, Set<String> eans, boolean expectedToFail) {
-        this.sku = sku;
-        this.name = name;
-        this.eans = eans;
-        this.expectedToFail=expectedToFail;
-        mockproduct = new MockProduct(sku, name, eans);
-        
-    }
-    
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("sku", sku)
-                .add("name", name)
-                .add("eans", eans)
-                .add("expectedToFail", expectedToFail)
-                .toString();
-    }
-}
