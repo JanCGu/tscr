@@ -2,6 +2,7 @@ package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
+import de.tarent.challenge.util.Check;
 
 import java.util.Objects;
 import java.util.Set;
@@ -69,9 +70,9 @@ public class Product implements IProduct {
     }
 
     public Product(String sku, String name, Set<String> eans, Money price) {
-        this.sku = checkNonEmpty(sku, "SKU may not be empty!"); //
-        this.name = checkNonEmpty(name, "Name may not be empty!");
-        this.eans = checkEans(eans);
+        this.sku = Check.nonEmpty(sku, "SKU may not be empty!"); //
+        this.name = Check.nonEmpty(name, "Name may not be empty!");
+        this.eans = Check.atLeastOne(eans,ean -> (ean == null || ean==""),"eans");
         this.price = checkAllowdPrice(price);
     }
 
@@ -90,43 +91,9 @@ public class Product implements IProduct {
         return toCheck;
     }
 
-    /**
-     * Checks if toCheck is non empty and returns it otherwise an
-     * IllegalArugmentException is throw.
-     *
-     * @param toCheck
-     * @param errorMsg the message of the Exception.
-     * @return returns toCheck.
-     * @throws IllegalArgumentException if the check fails this error will be
-     * thrown.
-     */
-    private String checkNonEmpty(String toCheck, String errorMsg) throws IllegalArgumentException {
-        if (toCheck == null || toCheck.isEmpty()) {
-            throw new IllegalArgumentException(errorMsg);
-        }
-        return toCheck;
-    }
+    
 
-    /**
-     * Checks that that at least one element exists and that no empty element
-     * exists.
-     *
-     * @param toCheck the Set<string> to check.
-     * @param name the name which should appear in the error message.
-     * @return Return toCheck if nothing failed.
-     * @throws IllegalArgumentException if the check failed this error will be
-     * thrown.
-     */
-    private Set<String> checkEans(Set<String> toCheck) throws IllegalArgumentException {
-        if (toCheck == null || toCheck.size() == 0) {
-            throw new IllegalArgumentException("eans has no entries.");
-        }
-        long nullentries = toCheck.stream().filter(ean -> ean == "").count();
-        if (nullentries > 0) {
-            throw new IllegalArgumentException("eans has empty entries.");
-        }
-        return toCheck;
-    }
+    
 
     @Override
     public String getSku() {
@@ -158,10 +125,6 @@ public class Product implements IProduct {
         Product product = (Product) o;
 
         return product.sku.equals(sku);
-    }
-
-    public boolean equals(Product p) {
-        return p == null ? sku == null : p.sku.equals(sku);
     }
 
     @Override
