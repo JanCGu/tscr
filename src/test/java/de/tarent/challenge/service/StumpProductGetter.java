@@ -1,25 +1,25 @@
 package de.tarent.challenge.service;
 
 import de.tarent.challenge.domain.IProduct;
-import de.tarent.challenge.domain.Product;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.ServiceUnavailableException;
 
 /**
- * A Mock of IProductGet for testing.
- *
- * Set Output bevore use.
+ * A Stump implementation of the IProductGetter for testing.
  *
  * @author Jan
  */
-public class MockProductGet implements IProductGetter {
+public class StumpProductGetter implements IProductGetter {
 
     public List<IProduct> Output;
-    
-    public MockProductGet()
-    {
-        Output = new ArrayList<>();
+
+    public StumpProductGetter() {
+        this(new ArrayList<IProduct>());
+    }
+
+    public StumpProductGetter(List<IProduct> out) {
+        Output = out;
     }
 
     @Override
@@ -32,6 +32,13 @@ public class MockProductGet implements IProductGetter {
         return Output;
     }
 
+    /**
+     * Allows returns the first element of Output
+     *
+     * @param sku
+     * @return
+     * @throws ServiceUnavailableException
+     */
     @Override
     public IProduct BySku(String sku) throws ServiceUnavailableException {
         if (Output.size() > 0) {
