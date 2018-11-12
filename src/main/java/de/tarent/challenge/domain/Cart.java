@@ -28,6 +28,10 @@ public class Cart implements ICart {
         calculateTotalPrice();
     }
     
+    public Cart(ICart in){
+        this(in.getId(),in.getProducts());
+    }
+    
 
     @Override
     public List<IProduct> getProducts() {
