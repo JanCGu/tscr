@@ -2,6 +2,8 @@ package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
 import de.tarent.challenge.util.Check;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -24,7 +26,7 @@ public class Cart implements ICart {
     public Cart(String id, List<IProduct> products)
     {
         this.id = Check.nonEmpty(id, "The Id may not be empty!");
-        this.products = Check.atLeastOne(products,p ->(p==null),"products");
+        this.products = new ArrayList<>(Check.atLeastOne(products,p ->(p==null),"products"));
         calculateTotalPrice();
     }
     
@@ -43,13 +45,37 @@ public class Cart implements ICart {
         return totalPrice;
     }
 
+    /**
+     * Removes the list of toRemove from the product list.
+     * 
+     * It might be that the same instance of a product is containt twice in the product list.
+     * In that case only one instance of the product is removed, if it only appears once in toRemove.
+     * @param toRemove if it is null nothing will be done and the function returns true.
+     * @return
+     * @throws ArrayIndexOutOfBoundsException 
+     */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) {
-       return changeProducts(toRemove,(ps,mod)-> ps.removeAll(mod));
+    public boolean removeProducts(List<IProduct> toRemove) throws ArrayIndexOutOfBoundsException {
+        if(toRemove==null)
+            return true;
+        
+       return changeProducts(toRemove,(ps,mod)-> {
+            mod.forEach(m ->ps.remove(m));
+            return true;
+       });
     }
 
+    /**
+     * Adds the products from toAdd to the products of the card. 
+     * @param toAdd if toAdd is null the function return true and nothing else will happen.
+     * @return
+     * @throws ArrayIndexOutOfBoundsException 
+     */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) {
+    public boolean addProducts(List<IProduct> toAdd) throws ArrayIndexOutOfBoundsException {
+        if(toAdd==null)
+            return true;
+        
         return changeProducts(toAdd,(ps,mod)->ps.addAll(mod));
     }
     
@@ -71,13 +97,16 @@ public class Cart implements ICart {
     
     /**
      * Calculates the totalPrice based on the list of products.
+     * The currency of the total price is assumed to be the one of the first product.
      * 
      * It is better to calculate the price as a whole than to add or substract individually.
      * This is the case, because in this case discounts can be easily applied. 
      */
-    private void calculateTotalPrice(){
-        totalPrice = Money.of(0, totalPrice.getCurrency());
-        products.forEach(product -> totalPrice=totalPrice.add(product.getPrice()));
+    private void calculateTotalPrice() throws ArrayIndexOutOfBoundsException{
+        if(products.isEmpty())
+            throw new ArrayIndexOutOfBoundsException("A card has to have at least one product in it.");
+        totalPrice = Money.of(BigDecimal.ZERO, products.get(0).getPrice().getCurrency());
+        products.stream().filter(product->product.getPrice()!=null).forEach(product -> totalPrice=totalPrice.add(product.getPrice()));
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.javamoney.moneta.Money;
  *
  * @author Jan
  */
-public class AssertProduct {
+public class AssertProduct implements IAssert{
 
     public IProduct mockproduct;
     public String sku;
@@ -39,5 +39,10 @@ public class AssertProduct {
                 .add("price", price)
                 .add("expectedToFail", expectedToFail)
                 .toString();
+    }
+
+    @Override
+    public boolean expectedToFail() {
+        return expectedToFail;
     }
 }

@@ -19,7 +19,11 @@ import javax.persistence.Transient;
 import org.javamoney.moneta.Money;
 
 /**
- *
+ * The CartDTO is an ACL Model for the Persitance layer.
+ * Therefore it will be retrived or written to the database.
+ * 
+ * In order not to double the domain logic it wraps an Cart object, but hids id.
+ * Therefore the Model doubels as a Proxy.
  * @author Jan
  */
 @Entity

@@ -87,7 +87,7 @@ public class Product implements IProduct {
             return null;
         }
         if(toCheck.isNegativeOrZero())
-            throw new IllegalArgumentException("The price can ether be null or has to be greater than 0.");
+            throw new IllegalArgumentException("The price can ether be zero or has to be greater than 0.");
         return toCheck;
     }
 
