@@ -33,8 +33,21 @@ public class CartController {
     @Autowired
     private ICartSetter cartSetter;
 
+    /**
+     * Allows to directly set the autowired variables.
+     *
+     * This declartion is atleast needed for testing.
+     *
+     * @param getter
+     * @param setter
+     */
+    public CartController(ICartGetter getter, ICartSetter setter) {
+        cartGetter = getter;
+        cartSetter = setter;
+    }
+
     @GetMapping
-    public List<CartModel> retriveAllCarts()  throws ServiceUnavailableException{
+    public List<CartModel> retriveAllCarts() throws ServiceUnavailableException {
         return convert(cartGetter.All());
     }
 
@@ -45,6 +58,7 @@ public class CartController {
 
     /**
      * Allows to delete a set of cartmodels from the storage.
+     *
      * @param toDelete
      * @return if the operation was sucessfull.
      */
@@ -55,21 +69,26 @@ public class CartController {
 
     /**
      * Allows to Update a Set of CartModels.
+     *
      * @param toUpdate
-     * @return 
+     * @return
      */
     @PostMapping
     public boolean updateCart(@RequestBody Set<CartModel> toUpdate) throws ServiceUnavailableException {
         return cartSetter.Update(convert(toUpdate));
     }
-    
-    private Set<ICart> convert(Set<CartModel> toConvert){
+
+    private Set<ICart> convert(Set<CartModel> toConvert) {
+        if(toConvert==null)
+            return null;
         Set<ICart> ret = new HashSet<>();
         toConvert.forEach(ret::add);
         return ret;
     }
 
     private List<CartModel> convert(List<ICart> toConvert) {
+        if(toConvert==null)
+            return null;
         List<CartModel> ret = new ArrayList<>();
         toConvert.forEach(cart -> ret.add(new CartModel(cart)));
         return ret;

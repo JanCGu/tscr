@@ -30,6 +30,13 @@ public class ProductController implements IProductController {
     @Autowired
     private IProductSetter productSetter;
 
+    /**
+     * Allows to directly set the autowired parameters.
+     * 
+     * This declaration is at least needed for testing.
+     * @param productGetterService
+     * @param productSetterService 
+     */
     public ProductController(IProductGetter productGetterService, IProductSetter productSetterService) {
         productGetter = productGetterService;
         productSetter = productSetterService;
