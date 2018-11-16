@@ -11,29 +11,29 @@ import org.javamoney.moneta.Money;
 
 /**
  * A Cart holds multible products and may not be empty.
- * 
+ *
  * It is a domain object and an entity.
+ *
  * @author Jan
  */
 public class Cart implements ICart {
-    
+
     private final String id;
-    
+
     private List<IProduct> products;
-    
+
     private Money totalPrice;
-    
-    public Cart(String id, List<IProduct> products)
-    {
+
+    public Cart(String id, List<IProduct> products) {
+        ensureProducts(products);
         this.id = Check.nonEmpty(id, "The Id may not be empty!");
-        this.products = new ArrayList<>(Check.atLeastOne(products,p ->(p==null),"products"));
+        this.products = new ArrayList<>(Check.atLeastOne(products, p -> (p == null), "products"));
         calculateTotalPrice();
     }
-    
-    public Cart(ICart in){
-        this(in.getId(),in.getProducts());
+
+    public Cart(ICart in) {
+        this(in.getId(), in.getProducts());
     }
-    
 
     @Override
     public List<IProduct> getProducts() {
@@ -47,66 +47,86 @@ public class Cart implements ICart {
 
     /**
      * Removes the list of toRemove from the product list.
-     * 
-     * It might be that the same instance of a product is containt twice in the product list.
-     * In that case only one instance of the product is removed, if it only appears once in toRemove.
-     * @param toRemove if it is null nothing will be done and the function returns true.
+     *
+     * It might be that the same instance of a product is containt twice in the
+     * product list. In that case only one instance of the product is removed,
+     * if it only appears once in toRemove.
+     *
+     * @param toRemove if it is null nothing will be done and the function
+     * returns true.
      * @return
-     * @throws ArrayIndexOutOfBoundsException 
+     * @throws ArrayIndexOutOfBoundsException
      */
     @Override
     public boolean removeProducts(List<IProduct> toRemove) throws ArrayIndexOutOfBoundsException {
-        if(toRemove==null)
+        if (toRemove == null) {
             return true;
-        
-       return changeProducts(toRemove,(ps,mod)-> {
-            mod.forEach(m ->ps.remove(m));
+        }
+
+        return changeProducts(toRemove, (ps, mod) -> {
+            mod.forEach(m -> ps.remove(m));
             return true;
-       });
+        });
     }
 
     /**
-     * Adds the products from toAdd to the products of the card. 
-     * @param toAdd if toAdd is null the function return true and nothing else will happen.
+     * Adds the products from toAdd to the products of the card.
+     *
+     * @param toAdd if toAdd is null the function return true and nothing else
+     * will happen.
      * @return
-     * @throws ArrayIndexOutOfBoundsException 
+     * @throws ArrayIndexOutOfBoundsException
      */
     @Override
     public boolean addProducts(List<IProduct> toAdd) throws ArrayIndexOutOfBoundsException {
-        if(toAdd==null)
+        if (toAdd == null) {
             return true;
-        
-        return changeProducts(toAdd,(ps,mod)->ps.addAll(mod));
+        }
+
+        return changeProducts(toAdd, (ps, mod) -> ps.addAll(mod));
     }
-    
+
     /**
-     * Executes the action with this products list and toModify.
-     * Then updates the total price based on the products in the list.
-     * 
+     * Executes the action with this products list and toModify. Then updates
+     * the total price based on the products in the list.
+     *
      * Allows to apply the open closed principle.
+     *
      * @param toModify
      * @param action
      * @return The return value of aciton.
      */
-    private boolean changeProducts(List<IProduct> toModify ,BiFunction<List<IProduct>,List<IProduct>,Boolean> action)
-    {
-        boolean ret = action.apply(products,toModify);
+    private boolean changeProducts(List<IProduct> toModify, BiFunction<List<IProduct>, List<IProduct>, Boolean> action) {
+        ensureProducts(toModify);
+        boolean ret = action.apply(products, toModify);
         calculateTotalPrice();
         return ret;
     }
-    
+
     /**
-     * Calculates the totalPrice based on the list of products.
-     * The currency of the total price is assumed to be the one of the first product.
-     * 
-     * It is better to calculate the price as a whole than to add or substract individually.
-     * This is the case, because in this case discounts can be easily applied. 
+     * Calculates the totalPrice based on the list of products. The currency of
+     * the total price is assumed to be the one of the first product.
+     *
+     * It is better to calculate the price as a whole than to add or substract
+     * individually. This is the case, because in this case discounts can be
+     * easily applied.
      */
-    private void calculateTotalPrice() throws ArrayIndexOutOfBoundsException{
-        if(products.isEmpty())
-            throw new ArrayIndexOutOfBoundsException("A card has to have at least one product in it.");
+    private void calculateTotalPrice() {
         totalPrice = Money.of(BigDecimal.ZERO, products.get(0).getPrice().getCurrency());
-        products.stream().filter(product->product.getPrice()!=null).forEach(product -> totalPrice=totalPrice.add(product.getPrice()));
+        products.stream().filter(product -> product.getPrice() != null).forEach(product -> totalPrice = totalPrice.add(product.getPrice()));
+    }
+
+    /**
+     * Ensures that the list of the products is non empty and only contains
+     * products with a price.
+     */
+    private void ensureProducts(List<IProduct> toEnsure) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
+        if (toEnsure == null || toEnsure.isEmpty()) {
+            throw new IllegalArgumentException("A list of products which should be added or removed from the card has to have at least one product in it.");
+        }
+        if (toEnsure.stream().filter(p -> p.getPrice() == null).count() > 0) {
+            throw new IllegalArgumentException("A product without a price was passed to the cart!");
+        }
     }
 
     @Override
@@ -116,12 +136,14 @@ public class Cart implements ICart {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null || !(obj instanceof Cart) || id == null)
+        if (obj == null || !(obj instanceof Cart) || id == null) {
             return false;
-        if(this == obj)
+        }
+        if (this == obj) {
             return true;
-        
-        Cart c = (Cart)obj;
+        }
+
+        Cart c = (Cart) obj;
         return c.id.equals(id);
     }
 
@@ -129,7 +151,7 @@ public class Cart implements ICart {
     public int hashCode() {
         return Objects.hashCode(this.id);
     }
-    
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -138,6 +160,5 @@ public class Cart implements ICart {
                 .add("totalPrice", totalPrice)
                 .toString();
     }
-    
-    
+
 }

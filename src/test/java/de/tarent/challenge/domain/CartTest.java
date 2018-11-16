@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * Unit tests for the domain cart entity.
  * @author Jan
  */
 public class CartTest {
@@ -75,7 +75,7 @@ public class CartTest {
         assertEquals(Money.of(2, "EUR"), cart.getTotalPrice());
 
         cart.removeProducts(p1s);
-        assertEquals("Only p1 as a product should be left",Money.of(1, "EUR"), cart.getTotalPrice());
+        assertEquals("Only p1 as a product should be left", Money.of(1, "EUR"), cart.getTotalPrice());
 
         //Test null operation
         cart.removeProducts(null);
@@ -88,10 +88,21 @@ public class CartTest {
         MockProduct pEmpty = new MockProduct("sku1", "name1", eans1, null);
         List<IProduct> pEmtys = new ArrayList<>();
         pEmtys.add(pEmpty);
-        cart.addProducts(pEmtys);
+        try {
+            cart.addProducts(pEmtys);
+            assertTrue("A product without a price cannot be added to a cart! What happens if it is the only one?", false);
+        } catch (IllegalArgumentException ex) {
+            assertTrue(true);
+        }
         assertEquals("products without a price shouldn't influence it", Money.of(1, "EUR"), cart.getTotalPrice());
-        assertTrue("p1+pEmpty", cart.getProducts().size() == 2);
-        cart.removeProducts(pEmtys);
+        assertTrue("only p1 as adding pEmpty failed", cart.getProducts().size() == 1);
+
+        try {
+            cart.removeProducts(pEmtys);
+            assertTrue("A product without a price cannot be removed from a cart! They didn't exist in the first place.", false);
+        } catch (IllegalArgumentException ex) {
+            assertTrue(true);
+        }
         assertEquals("products without a price shouldn't influence it", Money.of(1, "EUR"), cart.getTotalPrice());
         assertTrue("only p1 remains", cart.getProducts().size() == 1);
 
@@ -114,10 +125,19 @@ public class CartTest {
         eans1.add("ean1");
         Money m1 = Money.of(1, "EUR");
         MockProduct p1 = new MockProduct("sku1", "name1", eans1, m1);
+        MockProduct moneyless = new MockProduct("sku1", "name1", eans1, null);
         List<IProduct> p1s = new ArrayList<>();
         p1s.add(p1);
+        List<IProduct> mls = new ArrayList<>();
+        mls.add(moneyless);
+        List<IProduct> mls2 = new ArrayList<>();
+        mls2.add(p1);
+        mls2.add(moneyless);
+        mls2.add(p1);
         ret.add(new AssertCart(null, p1s, m1, true, true));
         ret.add(new AssertCart("a1", null, m1, true, true));
+        ret.add(new AssertCart("a1", mls, m1, true, true));
+        ret.add(new AssertCart("a1", mls2, m1, true, true));
         ret.add(new AssertCart("a1", p1s, m1, true, false));
 
         return ret;
