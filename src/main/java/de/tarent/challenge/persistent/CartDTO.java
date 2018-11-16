@@ -52,7 +52,13 @@ public class CartDTO implements ICart{
         this(in.getId(),in.getProducts());
     }
     
-    public CartDTO(String id, List<IProduct> products){
+    /**
+     * 
+     * @param id
+     * @param products
+     * @throws IllegalArgumentException if the input arguments were invalid. This is the case if id is null, products is null or if
+     */
+    public CartDTO(String id, List<IProduct> products) throws IllegalArgumentException{
         this.id=id;
         setProducts(products);
         shadowedCart = new Cart(id,products);
@@ -77,12 +83,14 @@ public class CartDTO implements ICart{
         return products.stream().map(p->(IProduct)p).collect(Collectors.toList());
     }
     
-    private void setProducts(List<IProduct> toSet)
+    private void setProducts(List<IProduct> toSet) throws IllegalArgumentException
     {
+        if(toSet == null)
+            throw new IllegalArgumentException("Can't set an empty list of products!");
         this.products = toSet.stream().map(product -> new ProductDTO(product)).collect(Collectors.toList());
     }
     
-    private void setThroughShadowedCart()
+    private void setThroughShadowedCart() throws IllegalArgumentException
     {
         setProducts(shadowedCart.getProducts());
         totalPrice = shadowedCart.getTotalPrice();

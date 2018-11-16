@@ -23,14 +23,14 @@ public class Cart implements ICart {
     
     private Money totalPrice;
     
-    public Cart(String id, List<IProduct> products)
+    public Cart(String id, List<IProduct> products) throws IllegalArgumentException
     {
         this.id = Check.nonEmpty(id, "The Id may not be empty!");
         this.products = new ArrayList<>(Check.atLeastOne(products,p ->(p==null),"products"));
         calculateTotalPrice();
     }
     
-    public Cart(ICart in){
+    public Cart(ICart in) throws IllegalArgumentException{
         this(in.getId(),in.getProducts());
     }
     
@@ -69,7 +69,7 @@ public class Cart implements ICart {
      * Adds the products from toAdd to the products of the card. 
      * @param toAdd if toAdd is null the function return true and nothing else will happen.
      * @return
-     * @throws ArrayIndexOutOfBoundsException 
+     * @throws ArrayIndexOutOfBoundsException is thrown if toAdd is null
      */
     @Override
     public boolean addProducts(List<IProduct> toAdd) throws ArrayIndexOutOfBoundsException {
