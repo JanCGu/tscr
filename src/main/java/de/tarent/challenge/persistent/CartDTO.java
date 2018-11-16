@@ -47,12 +47,12 @@ public class CartDTO implements ICart{
     @Transient 
     private Cart shadowedCart;
     
-    public CartDTO(ICart in)
+    public CartDTO(ICart in) throws IllegalArgumentException
     {
         this(in.getId(),in.getProducts());
     }
     
-    public CartDTO(String id, List<IProduct> products){
+    public CartDTO(String id, List<IProduct> products) throws IllegalArgumentException{
         this.id=id;
         setProducts(products);
         shadowedCart = new Cart(id,products);
@@ -77,12 +77,14 @@ public class CartDTO implements ICart{
         return products.stream().map(p->(IProduct)p).collect(Collectors.toList());
     }
     
-    private void setProducts(List<IProduct> toSet)
+    private void setProducts(List<IProduct> toSet) throws IllegalArgumentException
     {
+        if(toSet == null)
+            throw new IllegalArgumentException("The product list in the cart may not be empty!");
         this.products = toSet.stream().map(product -> new ProductDTO(product)).collect(Collectors.toList());
     }
     
-    private void setThroughShadowedCart()
+    private void setThroughShadowedCart() throws IllegalArgumentException
     {
         setProducts(shadowedCart.getProducts());
         totalPrice = shadowedCart.getTotalPrice();
