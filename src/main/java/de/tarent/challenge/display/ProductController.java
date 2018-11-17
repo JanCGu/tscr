@@ -15,6 +15,7 @@ import de.tarent.challenge.service.IProductGetter;
 import de.tarent.challenge.service.IProductSetter;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;

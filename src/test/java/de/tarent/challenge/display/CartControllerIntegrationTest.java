@@ -41,20 +41,20 @@ public class CartControllerIntegrationTest {
     public void testCRUDofCartWithExsitingProduct() throws ServiceUnavailableException {
         //setup
         List<ProductModel> products1 = new ArrayList<>();
-        List<ProductModel> products2 = new ArrayList<>();
+        List<ProductModel> p1Andp2 = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("ean1");
         ProductModel p1 = new ProductModel("skuTest1", "name1", eans, Money.of(1.0, "EUR"));
         ProductModel p2 = new ProductModel("skuTest2", "name2", eans, Money.of(1.0, "EUR"));
         products1.add(p1);
-        products2.add(p1);
-        products2.add(p2);
+        p1Andp2.add(p1);
+        p1Andp2.add(p2);
         List<IProduct> iproducts1 = convert(products1);
-        List<IProduct> iproducts2 = convert(products2);
+        List<IProduct> iproducts2 = convert(p1Andp2);
 
         assertNull("A test product 'skuTest1' may not exit in the storage!", pc.retrieveProductBySku("skuTest1"));
         assertNull("A test product 'skuTest2' may not exit in the storage!", pc.retrieveProductBySku("skuTest2"));
-        pc.updateProducts(products2);
+        pc.updateProducts(p1Andp2);
         Set<CartModel> carts = new HashSet<>();
         CartModel cart = new CartModel("testCart", iproducts1);
         carts.add(cart);
@@ -69,14 +69,15 @@ public class CartControllerIntegrationTest {
         //update - add other products.
         cart.addProducts(iproducts2);
         assertTrue("Carts updated", cc.updateCart(carts));
-        assertEquals("expected products retrived from the testcart from storage", iproducts2, cc.retriveCartById("testCart").getProducts());
-
+        List<IProduct>  dbp = cc.retriveCartById("testCart").getProducts();
+        assertEquals("Expected three products in card: p1,p1,p2",dbp.size(), 3);
+        
         //delete
         assertTrue("Cart deleted", cc.deleteCart(carts));
         assertNull("Cart does not exist in storage", cc.retriveCartById("testCart"));
 
         //cleanup
-        pc.deleteProducts(products2);
+        pc.deleteProducts(p1Andp2);
         assertNull("The test product 'skuTest1' was removed from the storage!", pc.retrieveProductBySku("skuTest1"));
         assertNull("The test product 'skuTest2 'was removed from the storage!", pc.retrieveProductBySku("skuTest2"));
     }

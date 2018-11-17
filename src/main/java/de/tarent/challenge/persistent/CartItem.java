@@ -1,12 +1,15 @@
 package de.tarent.challenge.persistent;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * A Cart Item represents a product and how often it was added to a cart.
@@ -23,8 +26,9 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name="sku")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name="sku", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ProductDTO product;
 
     private int amount;
