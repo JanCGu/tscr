@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import org.dom4j.IllegalAddException;
 import org.javamoney.moneta.Money;
 
 /**
@@ -23,16 +24,20 @@ public class Cart implements ICart {
     private List<IProduct> products;
 
     private Money totalPrice;
+    
+    private boolean checkedOut;
 
-    public Cart(String id, List<IProduct> products) {
+    public Cart(String id, List<IProduct> products) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
         ensureProducts(products);
         this.id = Check.nonEmpty(id, "The Id may not be empty!");
         this.products = new ArrayList<>(Check.atLeastOne(products, p -> (p == null), "products"));
         calculateTotalPrice();
+        checkedOut=false;
     }
 
     public Cart(ICart in) {
         this(in.getId(), in.getProducts());
+        checkedOut=in.getCheckedOut();
     }
 
     @Override
@@ -55,10 +60,9 @@ public class Cart implements ICart {
      * @param toRemove if it is null nothing will be done and the function
      * returns true.
      * @return
-     * @throws ArrayIndexOutOfBoundsException
      */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) throws ArrayIndexOutOfBoundsException {
+    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException {
         if (toRemove == null) {
             return true;
         }
@@ -75,10 +79,9 @@ public class Cart implements ICart {
      * @param toAdd if toAdd is null the function return true and nothing else
      * will happen.
      * @return
-     * @throws ArrayIndexOutOfBoundsException
      */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) throws ArrayIndexOutOfBoundsException {
+    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException {
         if (toAdd == null) {
             return true;
         }
@@ -96,7 +99,11 @@ public class Cart implements ICart {
      * @param action
      * @return The return value of aciton.
      */
-    private boolean changeProducts(List<IProduct> toModify, BiFunction<List<IProduct>, List<IProduct>, Boolean> action) {
+    private boolean changeProducts(List<IProduct> toModify, BiFunction<List<IProduct>, List<IProduct>, Boolean> action)
+            throws IllegalArgumentException {
+        if(checkedOut)
+            throw new IllegalAddException("The cart is checked out and the product list can't be changed.");
+        
         ensureProducts(toModify);
         boolean ret = action.apply(products, toModify);
         calculateTotalPrice();
@@ -120,7 +127,7 @@ public class Cart implements ICart {
      * Ensures that the list of the products is non empty and only contains
      * products with a price.
      */
-    private void ensureProducts(List<IProduct> toEnsure) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
+    private void ensureProducts(List<IProduct> toEnsure) throws IllegalArgumentException {
         if (toEnsure == null || toEnsure.isEmpty()) {
             throw new IllegalArgumentException("A list of products which should be added or removed from the card has to have at least one product in it.");
         }
@@ -159,6 +166,16 @@ public class Cart implements ICart {
                 .add("products", products)
                 .add("totalPrice", totalPrice)
                 .toString();
+    }
+
+    @Override
+    public boolean getCheckedOut() {
+        return this.checkedOut;
+    }
+
+    @Override
+    public void checkOut() {
+        checkedOut=true;
     }
 
 }

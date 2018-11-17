@@ -43,7 +43,7 @@ public class ProductStorer implements IProductSetter {
      * reference has no elements.
      */
     private boolean doOperation(Set<IProduct> reference, Function<Set<ProductDTO>, Iterable<ProductDTO>> doOperation) {
-        if (reference.size() == 0) {
+        if (reference.isEmpty()) {
             return true;
         }
 

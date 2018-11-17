@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,9 +48,12 @@ public class CartDTO implements ICart {
     @Column(length = 65335)//Blob
     @Basic(optional = true)
     protected Money totalPrice;
+    
+    private boolean checkedOut;
 
     /**
-     * This Cart exists to do all the heavy lifting implemented in the domain cart.
+     * This Cart exists to do all the heavy lifting implemented in the domain
+     * cart.
      */
     @Transient
     private Cart shadowedCart;
@@ -67,12 +68,18 @@ public class CartDTO implements ICart {
 
     public CartDTO(ICart in) throws IllegalArgumentException {
         this(in.getId(), in.getProducts());
+        if(in.getCheckedOut())
+        {
+            checkedOut=true;
+            shadowedCart.checkOut();
+        }
     }
 
     public CartDTO(String id, List<IProduct> products) throws IllegalArgumentException {
         this.id = id;
         setProducts(products);
         shadowedCart = new Cart(id, products);
+        checkedOut=false;
     }
 
     /**
@@ -190,6 +197,17 @@ public class CartDTO implements ICart {
     @Override
     public int hashCode() {
         return Objects.hashCode(this.id);
+    }
+
+    @Override
+    public boolean getCheckedOut() {
+       return checkedOut;
+    }
+
+    @Override
+    public void checkOut() {
+        checkedOut=true;
+        shadowedCart.checkOut();
     }
 
 }
