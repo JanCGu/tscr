@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.service.IProductSetter;
-import java.util.List;
 import java.util.Set;
 import javax.naming.ServiceUnavailableException;
 import org.springframework.beans.factory.annotation.Autowired;

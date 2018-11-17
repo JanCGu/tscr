@@ -18,7 +18,7 @@ public interface ICartGetter {
     
     /**
      * Retrives the first occurance of the ICarts with the id.
-     * @param sku
+     * @param id
      * @return 
      * @throws javax.naming.ServiceUnavailableException if the service of which it was request was not availablew.
      */

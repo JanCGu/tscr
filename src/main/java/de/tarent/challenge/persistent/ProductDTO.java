@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
 import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.domain.Product;
+import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.javamoney.moneta.Money;
 
@@ -41,10 +43,16 @@ public class ProductDTO implements IProduct {
     @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
     protected Set<String> eans;
 
-    @Column(length=65335)//Blob
+    @Column(length = 65335)//Blob
     @Basic(optional = true)
     protected Money price;
 
+    /**
+     * A ProdcutDTO should not be initalised empty as it cirumvents security
+     * measures!
+     *
+     * Needed for JPA.
+     */
     protected ProductDTO() {
     }
 

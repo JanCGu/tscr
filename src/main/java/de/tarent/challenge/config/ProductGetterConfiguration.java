@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Jan
  */
 @Configuration
-@ComponentScan(value = {"de.tarent.challenge.persitent"})
+@ComponentScan(value = {"de.tarent.challenge.persistent"})
 public class ProductGetterConfiguration {
 
     /**

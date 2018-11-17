@@ -13,43 +13,54 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Jan
  */
 @Transactional
-public class CartStorer implements ICartSetter{
+public class CartStorer implements ICartSetter {
 
     @Autowired
     private ICartRepository cartRepository;
-    
+
     /**
      * Adds a new cart to the database and updates an existing one.
+     *
      * @param toUpdate
      * @return is False if the operation failed.
-     * @throws ServiceUnavailableException 
+     * @throws ServiceUnavailableException
      */
     @Override
     public boolean Update(Set<ICart> toUpdate) throws ServiceUnavailableException {
-        if(toUpdate==null || toUpdate.isEmpty())
+        if (cartRepository == null) {
+            throw new ServiceUnavailableException("Missing persitance repository!");
+        }
+
+        if (toUpdate == null || toUpdate.isEmpty()) {
             return true;
-        
-        return cartRepository.saveAll(convert(toUpdate)).size()==toUpdate.size();
+        }
+
+        return cartRepository.saveAll(convert(toUpdate)).size() == toUpdate.size();
     }
 
     /**
      * Deletes the cart from the database.
+     *
      * @param toDelete
      * @return is False if the operation failed.
-     * @throws ServiceUnavailableException 
+     * @throws ServiceUnavailableException
      */
     @Override
     public boolean Delete(Set<ICart> toDelete) throws ServiceUnavailableException {
-        if(toDelete==null || toDelete.isEmpty())
+        if (cartRepository == null) {
+            throw new ServiceUnavailableException("Missing persitance repository!");
+        }
+
+        if (toDelete == null || toDelete.isEmpty()) {
             return true;
-        
+        }
+
         cartRepository.deleteInBatch(convert(toDelete));
         return true;
     }
-    
-    private Set<CartDTO> convert(Set<ICart> toConvert)
-    {
+
+    private Set<CartDTO> convert(Set<ICart> toConvert) {
         return toConvert.stream().map(cart -> new CartDTO(cart)).collect(Collectors.toSet());
     }
-    
+
 }

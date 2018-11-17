@@ -32,10 +32,11 @@ public class ProductController implements IProductController {
 
     /**
      * Allows to directly set the autowired parameters.
-     * 
+     *
      * This declaration is at least needed for testing.
+     *
      * @param productGetterService
-     * @param productSetterService 
+     * @param productSetterService
      */
     public ProductController(IProductGetter productGetterService, IProductSetter productSetterService) {
         productGetter = productGetterService;
@@ -82,20 +83,22 @@ public class ProductController implements IProductController {
 
     /**
      * Converts an iterable to a set.
+     *
      * @param toConvert
      * @return
-     * @throws DuplicateKeyException if two productmodels in the iterable exist, which are the same.
+     * @throws DuplicateKeyException if two productmodels in the iterable exist,
+     * which are the same.
      */
     private Set<IProduct> convert(Iterable<ProductModel> toConvert) throws DuplicateKeyException {
         if (toConvert == null) {
             return null;
         }
         Set<IProduct> ret = new HashSet<>();
-        for(ProductModel product:toConvert)
-        {
-            if (ret.contains(product)) 
+        for (ProductModel product : toConvert) {
+            if (ret.contains(product)) {
                 throw new DuplicateKeyException("Cant have to products by the same identifier: " + Product.getIdentifierName());
-            
+            }
+
             ret.add(product);
         }
         return ret;

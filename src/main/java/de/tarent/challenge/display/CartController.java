@@ -45,15 +45,27 @@ public class CartController {
         cartGetter = getter;
         cartSetter = setter;
     }
+    
+    protected CartController(){
+        
+    }
 
     @GetMapping
     public List<CartModel> retriveAllCarts() throws ServiceUnavailableException {
+        if(cartGetter==null)
+            throw new ServiceUnavailableException("Missing persitance layer!");
         return convert(cartGetter.All());
     }
 
     @GetMapping("/id")
     public CartModel retriveCartById(@PathVariable String id) throws ServiceUnavailableException {
-        return new CartModel(cartGetter.ById(id));
+        if(cartGetter==null)
+            throw new ServiceUnavailableException("Missing persitance layer!");
+        
+        ICart ret = cartGetter.ById(id);
+        if(ret == null)
+            return null;
+        return new CartModel(ret);
     }
 
     /**
@@ -64,6 +76,8 @@ public class CartController {
      */
     @DeleteMapping
     public boolean deleteCart(@RequestBody Set<CartModel> toDelete) throws ServiceUnavailableException {
+        if(cartSetter==null)
+            throw new ServiceUnavailableException("Missing persitance layer!");
         return cartSetter.Delete(convert(toDelete));
     }
 
@@ -75,6 +89,8 @@ public class CartController {
      */
     @PostMapping
     public boolean updateCart(@RequestBody Set<CartModel> toUpdate) throws ServiceUnavailableException {
+        if(cartSetter==null)
+            throw new ServiceUnavailableException("Missing persitance layer!");
         return cartSetter.Update(convert(toUpdate));
     }
 
