@@ -62,7 +62,7 @@ public class Cart implements ICart {
      * @return
      */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException {
+    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException,IllegalAccessException {
         if (toRemove == null) {
             return true;
         }
@@ -81,7 +81,7 @@ public class Cart implements ICart {
      * @return
      */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException {
+    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException,IllegalAccessException {
         if (toAdd == null) {
             return true;
         }
@@ -100,9 +100,9 @@ public class Cart implements ICart {
      * @return The return value of aciton.
      */
     private boolean changeProducts(List<IProduct> toModify, BiFunction<List<IProduct>, List<IProduct>, Boolean> action)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException,IllegalAccessException {
         if(checkedOut)
-            throw new IllegalAddException("The cart is checked out and the product list can't be changed.");
+            throw new IllegalAccessException("The cart is checked out and the product list can't be changed.");
         
         ensureProducts(toModify);
         boolean ret = action.apply(products, toModify);

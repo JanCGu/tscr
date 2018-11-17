@@ -140,7 +140,7 @@ public class CartDTO implements ICart {
         itemMap.forEach((iproduct, amount) -> items.add(new CartItem(new ProductDTO(iproduct), amount)));
     }
 
-    private void setThroughShadowedCart() throws IllegalArgumentException {
+    private void setThroughShadowedCart() throws IllegalArgumentException,IllegalAccessException {
         setProducts(shadowedCart.getProducts());
         totalPrice = shadowedCart.getTotalPrice();
     }
@@ -152,7 +152,7 @@ public class CartDTO implements ICart {
      * @return
      */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) {
+    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException,IllegalAccessException {
         boolean ret = shadowedCart.removeProducts(toRemove);
         setThroughShadowedCart();
         return ret;
@@ -165,7 +165,7 @@ public class CartDTO implements ICart {
      * @return
      */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) {
+    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException,IllegalAccessException {
         boolean ret = shadowedCart.addProducts(toAdd);
         setThroughShadowedCart();
         return ret;

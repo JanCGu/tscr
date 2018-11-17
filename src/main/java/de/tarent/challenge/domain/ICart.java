@@ -30,19 +30,25 @@ public interface ICart {
      * will be removed twice. Therefore toRemove must a list and not a set.
      *
      * @param toRemove
-     * @throws java.lang.IllegalAccessException Is thrown if the cart is checked out or if the product can't be accepted.
+     * @throws java.lang.IllegalAccessException Is thrown if the cart is checked
+     * out.
+     * @throws java.lang.IllegalArgumentException Is thrown if if the product
+     * can't be accepted.
      * @return Is true if all products could be removed or if toRemove was null.
      */
-    boolean removeProducts(List<IProduct> toRemove) throws IllegalAccessException;
+    boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException, IllegalAccessException;
 
     /**
      * Adds the list of products to the cart.
      *
      * @param toAdd
-     * @throws java.lang.IllegalAccessException Is thrown if the cart is checked out or if the product can not be accepted.
+     * @throws java.lang.IllegalAccessException Is thrown if the cart is checked
+     * out.
+     * @throws java.lang.IllegalArgumentException Is thrown if if the product
+     * can't be accepted.
      * @return
      */
-    boolean addProducts(List<IProduct> toAdd) throws IllegalAccessException;
+    boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException, IllegalAccessException;
 
     /**
      * Returns a boolean, which indicateds if the cart is checked out. A Checked
