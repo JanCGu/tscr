@@ -1,0 +1,9 @@
+This onion Architecture allows a high degree of flexibilty and encapsulation. All "three" layers are individualy testable and the display and perstiance layer are "easy" replacebale. Therefore they are a basic but not full implementation of a plugin infastructure. It is also important to note that the architecture only passes Interaces and not concrete objects. This allows an high degree of flexibilty and ease of testing.
+
+If it is desired to lose the dependency of the perstiance layer in the config layer this architecture would have to be extended with an observer-pattern in which the perstiance layer is registered as the subject. This implementation happen similar to an event handler and would only be needed for the creation of the entitystorer or entityretiver as further use would be as an ientitysetter or ientitygetter. Note that if this extension is desired the observer would need a singelton implementation. Through the use of spring DI the configuration is basicly a factory, but cannot be implemented as such because it needs the autowirering. 
+
+The advantage of this layered architecture is that it automaticly provides two anti coruption layers (ACL) for the the persitance and display. The disadvantage is that introduction of a new entity is complex and therefore needs time, but changes to the entity are easy and simply through the decoupling of the objects.
+
+An entity represents a domain entity which sould be persited or stored. Note that if you do not have a domain entity in eather the display or perstiance layer it should stay there and shouldn't be passed or processed in another layer as this would destroy the business model which is represtended through the domain. 
+
+Also note that non business logic functionality like an enetity to json should be moved to an service class which may as well be static.

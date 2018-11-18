@@ -1,0 +1,5 @@
+The idear behind this Archtecture of a double observer pattern for each out and in is that it would allow asynchron responses and even to have multible responses for the Out (which might be display implementation) and the in (which might be a storage implementation). Furhter more it would allow an easy implementation of a push messaging system. Through its general nature the entity could also be implemented through generics and therefore it would speed up the creation of new entities, which is the main disadvantage of the used general vertical architecture.
+
+The disadvantage is that a setup of the general nature is realy complicated and an incomplete version also resides in git in src/main/java/de/tarent/challenge/service/Asymetric. This version was ultimatly stopped due to time constrains. Also if you start to extend to multiple in and outs which might message at the same time, the usal problems of timing and handling of said timing arise, which would have to be dailed with in a generic manner further complicating the implementation.
+
+Therefore this architecture remains as a thought to be implemented if the need for an async plugin infastructure arises.
