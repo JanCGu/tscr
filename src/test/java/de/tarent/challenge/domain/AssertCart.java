@@ -1,4 +1,3 @@
-
 package de.tarent.challenge.domain;
 
 import com.google.common.base.MoreObjects;
@@ -7,34 +6,36 @@ import java.util.Set;
 import org.javamoney.moneta.Money;
 
 /**
- * Helper class to create a MockProduct and store the product properties
- * as well as if it should fail.
+ * Helper class to create a MockProduct and store the product properties as well
+ * as if it should fail.
  *
  * @author Jan
  */
-public class AssertCart implements IAssert{
+public class AssertCart implements IAssert {
 
     public ICart mockCart;
     public String id;
     public List<IProduct> products;
     public Money totalPrice;
+    public boolean checkedOut;
     public boolean expectedToFail;
-    
+
     /**
      * Return value of the operations(remove & update of the mockCart.)
      */
     public boolean operationOutcome;
-    
-    public AssertCart(String id, List<IProduct> products,Money totalPrice,boolean operationOutcome, boolean expectedToFail) {
+
+    public AssertCart(String id, List<IProduct> products, Money totalPrice, boolean CheckedOut, boolean operationOutcome, boolean expectedToFail) {
         this.id = id;
         this.products = products;
         this.totalPrice = totalPrice;
-        
-        this.expectedToFail=expectedToFail;
-        mockCart = new MockCart(id,products,totalPrice,operationOutcome);
-        
+        this.checkedOut = CheckedOut;
+
+        this.expectedToFail = expectedToFail;
+        mockCart = new MockCart(id, products, totalPrice, CheckedOut, operationOutcome);
+
     }
-    
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

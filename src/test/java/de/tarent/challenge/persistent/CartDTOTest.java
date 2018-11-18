@@ -21,7 +21,7 @@ public class CartDTOTest {
     }
 
     @Test
-    public void testOperationOnCart() {
+    public void testOperationOnCart() throws IllegalArgumentException, IllegalAccessException {
         testProductMovementInCart((id, products) -> new CartDTO(id, products));
     }
 }
