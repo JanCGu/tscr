@@ -23,5 +23,6 @@ public class CartModelTest {
         ct.testOperationOnCart();
         ct.testCheckOut();
         ct.testNonAvailableProducts();
+        ct.testEquality();
     }
 }

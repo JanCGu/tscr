@@ -182,7 +182,7 @@ public class CartDTO implements ICart {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Cart) || id == null) {
+        if (obj == null || !(obj instanceof CartDTO) || id == null) {
             return false;
         }
         if (this == obj) {
@@ -190,7 +190,7 @@ public class CartDTO implements ICart {
         }
 
         CartDTO c = (CartDTO) obj;
-        return c.id.equals(id);
+        return c.getId().equals(id);
     }
 
     @Override

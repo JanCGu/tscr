@@ -24,6 +24,21 @@ import static org.junit.Assert.assertTrue;
 public class GeneralCartTests {
 
     /**
+     * To carts should be equal if their id is equal.
+     *
+     * @param getCart
+     */
+    public static void testCartEquality(BiFunction<String, List<IProduct>, ICart> getCart) {
+        cartSetup cs = setupCart(getCart);
+        ICart c1 = cs.cart;
+        ICart c2 = getCart.apply(c1.getId(), cs.p2Andp3);
+        ICart c3 = getCart.apply("nope", c1.getProducts());
+        assertEquals("The same id means it is the same cart.",c1,c2);
+        assertFalse("Diffrent id means diffrent carts",c1.equals(c3));
+        
+    }
+
+    /**
      * Tests what happens if a product which is available is added and removed
      * from the cart. Also tests what happens if a not available product is
      * added and removed.
@@ -35,21 +50,21 @@ public class GeneralCartTests {
         ICart validCart = cs.cart;
 
         testAddNotAvailableProduct(validCart, cs.pNotAvailable);
-        
-        boolean exception = tryRemoveProduct(validCart,cs.pNotAvailable);
+
+        boolean exception = tryRemoveProduct(validCart, cs.pNotAvailable);
         assertFalse("A not existing product should do nothing, even if it is not valid.", exception);
 
         ICart oldCart = getCart.apply("old cart", cs.pNotAvailable);
         oldCart.addProducts(cs.p1);//ensure that at least 1 product is allways in the cart.
-        
-        testAddNotAvailableProduct(oldCart,cs.pNotAvailable);
-        
-        exception = tryRemoveProduct(validCart,cs.pNotAvailable);
+
+        testAddNotAvailableProduct(oldCart, cs.pNotAvailable);
+
+        exception = tryRemoveProduct(validCart, cs.pNotAvailable);
         assertFalse("A not available product should still be capable of removing from the oldCart", exception);
     }
-    
-    private static boolean tryRemoveProduct(ICart cart , List<IProduct> products) throws IllegalAccessException{
-                
+
+    private static boolean tryRemoveProduct(ICart cart, List<IProduct> products) throws IllegalAccessException {
+
         boolean exception = false;
         try {
             cart.removeProducts(products);

@@ -33,4 +33,9 @@ public class CartDTOTest {
     public void testNonAvailableProducts() throws IllegalAccessException {
         GeneralCartTests.testProductAvailabilityBehaviour((id, products) -> new CartDTO(id, products));
     }
+
+    @Test
+    public void testEquality() {
+        GeneralCartTests.testCartEquality((id, products) -> new CartDTO(id, products));
+    }
 }

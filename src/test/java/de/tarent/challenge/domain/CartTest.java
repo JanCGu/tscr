@@ -29,9 +29,14 @@ public class CartTest {
     public void testCheckOut() {
         GeneralCartTests.testCheckedOutBehaviour((id, products) -> new Cart(id, products));
     }
-    
+
     @Test
     public void testNonAvailableProducts() throws IllegalAccessException {
         GeneralCartTests.testProductAvailabilityBehaviour((id, products) -> new Cart(id, products));
+    }
+
+    @Test
+    public void testEquality() {
+        GeneralCartTests.testCartEquality((id, products) -> new Cart(id, products));
     }
 }
