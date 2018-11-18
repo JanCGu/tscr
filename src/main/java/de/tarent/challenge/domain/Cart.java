@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import org.dom4j.IllegalAddException;
 import org.javamoney.moneta.Money;
 
 /**
@@ -85,6 +84,9 @@ public class Cart implements ICart {
         if (toAdd == null) {
             return true;
         }
+        if (toAdd.stream().anyMatch(product -> !product.getAvailable())) {
+            throw new IllegalArgumentException("Can't add a product to a cart, which is not available.");
+        }
 
         return changeProducts(toAdd, (ps, mod) -> ps.addAll(mod));
     }
@@ -132,7 +134,7 @@ public class Cart implements ICart {
         if (toEnsure == null || toEnsure.isEmpty()) {
             throw new IllegalArgumentException("A list of products which should be added or removed from the card has to have at least one product in it.");
         }
-        if (toEnsure.stream().filter(p -> p.getPrice() == null).count() > 0) {
+        if (toEnsure.stream().anyMatch(p -> p.getPrice() == null)) {
             throw new IllegalArgumentException("A product without a price was passed to the cart!");
         }
     }
@@ -166,7 +168,7 @@ public class Cart implements ICart {
                 .add("id", id)
                 .add("products", products)
                 .add("totalPrice", totalPrice)
-                .add("checkedOut",checkedOut)
+                .add("checkedOut", checkedOut)
                 .toString();
     }
 

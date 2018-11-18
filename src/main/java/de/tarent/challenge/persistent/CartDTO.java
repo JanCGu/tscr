@@ -1,6 +1,5 @@
 package de.tarent.challenge.persistent;
 
-import com.google.common.base.MoreObjects;
 import de.tarent.challenge.domain.Cart;
 import de.tarent.challenge.domain.ICart;
 import de.tarent.challenge.domain.IProduct;
@@ -49,7 +48,7 @@ public class CartDTO implements ICart {
     @Column(length = 65335)//Blob
     @Basic(optional = true)
     private Money totalPrice;
-    
+
     private boolean checkedOut;
 
     /**
@@ -69,9 +68,8 @@ public class CartDTO implements ICart {
 
     public CartDTO(ICart in) throws IllegalArgumentException {
         this(in.getId(), in.getProducts());
-        if(in.getCheckedOut())
-        {
-            checkedOut=true;
+        if (in.getCheckedOut()) {
+            checkedOut = true;
             shadowedCart.checkOut();
         }
     }
@@ -80,7 +78,7 @@ public class CartDTO implements ICart {
         this.id = id;
         setProducts(products);
         shadowedCart = new Cart(id, products);
-        checkedOut=false;
+        checkedOut = false;
     }
 
     /**
@@ -141,7 +139,7 @@ public class CartDTO implements ICart {
         itemMap.forEach((iproduct, amount) -> items.add(new CartItem(new ProductDTO(iproduct), amount)));
     }
 
-    private void setThroughShadowedCart() throws IllegalArgumentException,IllegalAccessException {
+    private void setThroughShadowedCart() throws IllegalArgumentException, IllegalAccessException {
         setProducts(shadowedCart.getProducts());
         totalPrice = shadowedCart.getTotalPrice();
     }
@@ -153,7 +151,7 @@ public class CartDTO implements ICart {
      * @return
      */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException,IllegalAccessException {
+    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException, IllegalAccessException {
         boolean ret = shadowedCart.removeProducts(toRemove);
         setThroughShadowedCart();
         return ret;
@@ -166,7 +164,7 @@ public class CartDTO implements ICart {
      * @return
      */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException,IllegalAccessException {
+    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException, IllegalAccessException {
         boolean ret = shadowedCart.addProducts(toAdd);
         setThroughShadowedCart();
         return ret;
@@ -194,7 +192,8 @@ public class CartDTO implements ICart {
         CartDTO c = (CartDTO) obj;
         return c.id.equals(id);
     }
-    
+
+    @Override
     public String toString() {
         return shadowedCart.toString();
     }
@@ -206,12 +205,12 @@ public class CartDTO implements ICart {
 
     @Override
     public boolean getCheckedOut() {
-       return checkedOut;
+        return checkedOut;
     }
 
     @Override
     public void checkOut() {
-        checkedOut=true;
+        checkedOut = true;
         shadowedCart.checkOut();
     }
 

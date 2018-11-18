@@ -41,13 +41,11 @@ public class Product implements IProduct {
      * Stores how much the procut costs. Can only be null or greater than 0.
      */
     private Money price;
-    
+
     /**
      * Indicates if the product is available.
      */
     private boolean available;
-    
-    
 
     private Product() {
     }
@@ -58,13 +56,13 @@ public class Product implements IProduct {
      * @param in the IProduct to be converted.
      */
     public Product(IProduct in) throws IllegalArgumentException {
-        this(in.getSku(), in.getName(), in.getEans(),in.getPrice(), in.getAvailable());
+        this(in.getSku(), in.getName(), in.getEans(), in.getPrice(), in.getAvailable());
     }
 
     /**
      * Initalises the Product with a sku, name and eans. No sku name or eans may
      * be empty. Eans may not contain a empty string.
-     * 
+     *
      * This product does not have a price and therefore it isn't available.
      *
      * @param sku the stock keeping unit of the product
@@ -74,20 +72,22 @@ public class Product implements IProduct {
      * not given.
      */
     public Product(String sku, String name, Set<String> eans) throws IllegalArgumentException {
-        this(sku, name, eans, null,false);
+        this(sku, name, eans, null, false);
 
     }
 
-    public Product(String sku, String name, Set<String> eans, Money price,  boolean availability) {
+    public Product(String sku, String name, Set<String> eans, Money price, boolean availability) {
         this.sku = Check.nonEmpty(sku, "SKU may not be empty!"); //
         this.name = Check.nonEmpty(name, "Name may not be empty!");
-        this.eans = Check.atLeastOne(eans,ean -> (ean == null || ean==""),"eans");
+        this.eans = Check.atLeastOne(eans, ean -> (ean == null || ean == ""), "eans");
         this.price = checkAllowdPrice(price);
-        this.available=availability;
+        this.available = availability;
     }
 
     /**
-     * Checks if toCheck is an allowed Price. A Price can be null or has to be greater than 0.
+     * Checks if toCheck is an allowed Price. A Price can be null or has to be
+     * greater than 0.
+     *
      * @param toCheck
      * @return returns toCheck if it is valid.
      * @throws IllegalArgumentException throws an error if toCheck is invalid.
@@ -96,14 +96,11 @@ public class Product implements IProduct {
         if (toCheck == null) {
             return null;
         }
-        if(toCheck.isNegativeOrZero())
+        if (toCheck.isNegativeOrZero()) {
             throw new IllegalArgumentException("The price can ether be zero or has to be greater than 0.");
+        }
         return toCheck;
     }
-
-    
-
-    
 
     @Override
     public String getSku() {
@@ -149,13 +146,14 @@ public class Product implements IProduct {
                 .add("name", name)
                 .add("eans", eans)
                 .add("price", price)
-                .add("available",available)
+                .add("available", available)
                 .toString();
     }
 
     /**
      * Returns the price of the product.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Money getPrice() {

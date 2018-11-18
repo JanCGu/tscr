@@ -33,7 +33,8 @@ public class CartControllerIntegrationTest {
     private ProductController pc;
 
     /**
-     * Tests the creat, read, update and delete operations for a card.This is the Integration test to the Issue #4.
+     * Tests the creat, read, update and delete operations for a card.This is
+     * the Integration test to the Issue #4.
      *
      * @throws javax.naming.ServiceUnavailableException
      */
@@ -44,8 +45,8 @@ public class CartControllerIntegrationTest {
         List<ProductModel> p1Andp2 = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("ean1");
-        ProductModel p1 = new ProductModel("skuTest1", "name1", eans, Money.of(1.0, "EUR"),true);
-        ProductModel p2 = new ProductModel("skuTest2", "name2", eans, Money.of(1.0, "EUR"),true);
+        ProductModel p1 = new ProductModel("skuTest1", "name1", eans, Money.of(1.0, "EUR"), true);
+        ProductModel p2 = new ProductModel("skuTest2", "name2", eans, Money.of(1.0, "EUR"), true);
         products1.add(p1);
         p1Andp2.add(p1);
         p1Andp2.add(p2);
@@ -69,9 +70,9 @@ public class CartControllerIntegrationTest {
         //update - add other products.
         cart.addProducts(iproducts2);
         assertTrue("Carts updated", cc.updateCart(carts));
-        List<IProduct>  dbp = cc.retriveCartById("testCart").getProducts();
-        assertEquals("Expected three products in card: p1,p1,p2",dbp.size(), 3);
-        
+        List<IProduct> dbp = cc.retriveCartById("testCart").getProducts();
+        assertEquals("Expected three products in card: p1,p1,p2", dbp.size(), 3);
+
         //delete
         assertTrue("Cart deleted", cc.deleteCart(carts));
         assertNull("Cart does not exist in storage", cc.retriveCartById("testCart"));

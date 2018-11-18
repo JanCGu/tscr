@@ -121,7 +121,7 @@ public class ProductDTO implements IProduct {
                 .add("name", name)
                 .add("eans", eans)
                 .add("price", price)
-                .add("available",available)
+                .add("available", available)
                 .toString();
     }
 

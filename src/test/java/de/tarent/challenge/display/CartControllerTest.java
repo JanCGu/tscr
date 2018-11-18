@@ -28,13 +28,13 @@ public class CartControllerTest {
         out.addAll(setModel);
         StumpCartGetter stumpGet = new StumpCartGetter(out);
         StumpCartSetter stumpSet = new StumpCartSetter(true);
-        
+
         CartController cc = new CartController(stumpGet, stumpSet);
-        assertEquals("Expected to retrive out!",out, cc.retriveAllCarts());
-        
-        stumpGet.Output=null;
-        assertNull("Expected to retrive out!",cc.retriveAllCarts());
-        
+        assertEquals("Expected to retrive out!", out, cc.retriveAllCarts());
+
+        stumpGet.Output = null;
+        assertNull("Expected to retrive out!", cc.retriveAllCarts());
+
     }
 
     @Test
@@ -44,9 +44,9 @@ public class CartControllerTest {
         out.addAll(setModel);
         StumpCartGetter stumpGet = new StumpCartGetter(out);
         StumpCartSetter stumpSet = new StumpCartSetter(true);
-        
+
         CartController cc = new CartController(stumpGet, stumpSet);
-        assertEquals("Expected to retrive frist cart!",out.get(0), cc.retriveCartById("c1"));
+        assertEquals("Expected to retrive frist cart!", out.get(0), cc.retriveCartById("c1"));
         //c2 or a 'not found' cannot be retrived as the sump has no logic for it and still returns c1.
     }
 
@@ -75,7 +75,7 @@ public class CartControllerTest {
     }
 
     private void doSetOperation(BiFunction<CartController, Set<CartModel>, Boolean> doIO) {
-        
+
         Set<CartModel> setModel = getCarts();
         List<ICart> out = new ArrayList<>();
         out.addAll(setModel);
@@ -93,7 +93,7 @@ public class CartControllerTest {
         List<IProduct> products = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("ean1");
-        products.add(new ProductModel("sku", "name", eans,Money.of(1,"EUR"),true));
+        products.add(new ProductModel("sku", "name", eans, Money.of(1, "EUR"), true));
 
         ret.add(new CartModel("c1", products));
         ret.add(new CartModel("c2", products));

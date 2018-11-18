@@ -1,4 +1,3 @@
-
 package de.tarent.challenge.display;
 
 import org.junit.Test;
@@ -15,7 +14,8 @@ import de.tarent.challenge.domain.ProductTest;
 public class ProductModelTest {
 
     /**
-     * At the moment the ProductModel is just a Product and has no extra functionality!
+     * At the moment the ProductModel is just a Product and has no extra
+     * functionality!
      */
     @Test
     public void ProductCreateTest() {

@@ -51,37 +51,37 @@ public class ProductControllerTest {
             assertTrue(true);
         }
     }
-    
+
     @Test
     public void deleteTest() throws ServiceUnavailableException {
         Iterable<ProductModel> toDelete = getProducts();
         StumpProductGetter get = new StumpProductGetter(new ArrayList<>());
         StumpProductSetter set = new StumpProductSetter(true);
         ProductController pc = new ProductController(get, set);
-        
-        assertTrue("An null or empty operation is true",pc.deleteProducts(null));
-        assertTrue("Operation should be successfull!",pc.deleteProducts(toDelete));
-        assertTrue("The right models were tried to be deleted",set.toDelete.size()==1 && set.toUpdate==null);
+
+        assertTrue("An null or empty operation is true", pc.deleteProducts(null));
+        assertTrue("Operation should be successfull!", pc.deleteProducts(toDelete));
+        assertTrue("The right models were tried to be deleted", set.toDelete.size() == 1 && set.toUpdate == null);
     }
+
     @Test
     public void updateTest() throws ServiceUnavailableException {
         Iterable<ProductModel> toUpdate = getProducts();
         StumpProductGetter get = new StumpProductGetter(new ArrayList<>());
         StumpProductSetter set = new StumpProductSetter(true);
         ProductController pc = new ProductController(get, set);
-        
-        assertTrue("An null or empty operation is true",pc.updateProducts(null));
-        assertTrue("Operation should be successfull!",pc.updateProducts(toUpdate));
-        assertTrue("The right models were tried to be deleted",set.toUpdate.size()==1 && set.toDelete==null);
+
+        assertTrue("An null or empty operation is true", pc.updateProducts(null));
+        assertTrue("Operation should be successfull!", pc.updateProducts(toUpdate));
+        assertTrue("The right models were tried to be deleted", set.toUpdate.size() == 1 && set.toDelete == null);
     }
-    
 
     private Iterable<ProductModel> getProducts() {
         ArrayList<ProductModel> ret = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("E1");
         ret.add(new ProductModel("sku", "name", eans));
-        
+
         return ret;
     }
 
@@ -103,6 +103,6 @@ public class ProductControllerTest {
         Set<String> eans = new HashSet<>();
         eans.add("1234567890123");
         Money oneEur = Money.of(1.23, "EUR");
-        return new ProductModel("testSKU", name, eans,oneEur,true);
+        return new ProductModel("testSKU", name, eans, oneEur, true);
     }
 }

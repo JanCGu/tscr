@@ -11,6 +11,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Contains tests for the behaviour which should be shared through all products.
+ *
+ * This Test ensures the Liskov substitution principle.
  *
  * @author jan
  */

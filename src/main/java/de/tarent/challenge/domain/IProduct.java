@@ -4,8 +4,9 @@ import java.util.Set;
 import org.javamoney.moneta.Money;
 
 /**
- * Represents an Interface to Product.
- * A Product represents an enty of something which can be bought in a shop.
+ * Represents an Interface to Product. A Product represents an enty of something
+ * which can be bought in a shop.
+ *
  * @author Jan
  */
 public interface IProduct {
@@ -15,11 +16,11 @@ public interface IProduct {
     String getName();
 
     String getSku();
-    
+
     Money getPrice();
-    
+
     void setAvailable(boolean availability);
-    
+
     boolean getAvailable();
-    
+
 }
