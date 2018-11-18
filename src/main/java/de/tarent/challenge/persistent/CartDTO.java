@@ -1,5 +1,6 @@
 package de.tarent.challenge.persistent;
 
+import com.google.common.base.MoreObjects;
 import de.tarent.challenge.domain.Cart;
 import de.tarent.challenge.domain.ICart;
 import de.tarent.challenge.domain.IProduct;
@@ -192,6 +193,10 @@ public class CartDTO implements ICart {
 
         CartDTO c = (CartDTO) obj;
         return c.id.equals(id);
+    }
+    
+    public String toString() {
+        return shadowedCart.toString();
     }
 
     @Override

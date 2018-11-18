@@ -1,8 +1,9 @@
-package de.tarent.challenge.domain;
+package de.tarent.challenge.domain.General;
 
 import com.google.common.base.MoreObjects;
+import de.tarent.challenge.domain.ICart;
+import de.tarent.challenge.domain.IProduct;
 import java.util.List;
-import java.util.Set;
 import org.javamoney.moneta.Money;
 
 /**

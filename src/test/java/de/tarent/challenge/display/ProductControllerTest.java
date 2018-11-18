@@ -6,7 +6,6 @@
 package de.tarent.challenge.display;
 
 import de.tarent.challenge.domain.IProduct;
-import de.tarent.challenge.domain.MockProduct;
 import de.tarent.challenge.service.IProductGetter;
 import de.tarent.challenge.service.IProductSetter;
 import de.tarent.challenge.service.StumpProductGetter;
@@ -104,6 +103,6 @@ public class ProductControllerTest {
         Set<String> eans = new HashSet<>();
         eans.add("1234567890123");
         Money oneEur = Money.of(1.23, "EUR");
-        return new ProductModel("testSKU", name, eans,oneEur);
+        return new ProductModel("testSKU", name, eans,oneEur,true);
     }
 }

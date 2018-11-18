@@ -18,4 +18,8 @@ public interface IProduct {
     
     Money getPrice();
     
+    void setAvailable(boolean availability);
+    
+    boolean getAvailable();
+    
 }

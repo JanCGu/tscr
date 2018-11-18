@@ -5,6 +5,9 @@
  */
 package de.tarent.challenge.domain;
 
+import de.tarent.challenge.domain.General.AssertCart;
+import de.tarent.challenge.domain.General.MockProduct;
+import de.tarent.challenge.domain.General.GeneralCreationTests;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,30 +58,26 @@ public class CartTest {
         cartSetup sc = setupCart(getCart);
         ICart cart = sc.cart;
         boolean threwException = false;
-        
+
         cart.checkOut();
-        assertTrue("Cart is checked out",cart.getCheckedOut());
-        
-        
-        try
-        {
+        assertTrue("Cart is checked out", cart.getCheckedOut());
+
+        try {
             cart.addProducts(sc.p2Andp3);
+        } catch (IllegalAccessException ex) {
+            threwException = true;
         }
-        catch(IllegalAccessException ex)
-        {
-            threwException=true;
-        }
-        assertTrue("Adding should throw an IllegalAccess Exception",threwException);
-        
-        try
-        {
+        assertTrue("Adding should throw an IllegalAccess Exception", threwException);
+        assertTrue("Cart is checked out (2).", cart.getCheckedOut());
+
+        threwException = false;
+        try {
             cart.removeProducts(sc.p2Andp3);
+        } catch (IllegalAccessException ex) {
+            threwException = true;
         }
-        catch(IllegalAccessException ex)
-        {
-            threwException=true;
-        }
-        assertTrue("Removing should throw an IllegalAccess Exception",threwException);
+        assertTrue("Removing should throw an IllegalAccess Exception", threwException);
+        assertTrue("Cart is checked out (3).", cart.getCheckedOut());
 
     }
 
@@ -92,10 +91,10 @@ public class CartTest {
         Set<String> eans1 = new HashSet<>();
         eans1.add("ean1");
         MockProduct[] ret = {
-            new MockProduct("sku1", "name1", eans1, Money.of(1, "EUR")),
-            new MockProduct("sku1", "name1", eans1, Money.of(3, "EUR")),
-            new MockProduct("sku1", "name1", eans1, Money.of(2, "EUR")),
-            new MockProduct("sku1", "name1", eans1, null)
+            new MockProduct("sku1", "name1", eans1, Money.of(1, "EUR"),true),
+            new MockProduct("sku1", "name1", eans1, Money.of(3, "EUR"),true),
+            new MockProduct("sku1", "name1", eans1, Money.of(2, "EUR"),true),
+            new MockProduct("sku1", "name1", eans1, null,true)
         };
         return ret;
     }
@@ -191,8 +190,8 @@ public class CartTest {
         Set<String> eans1 = new HashSet<>();
         eans1.add("ean1");
         Money m1 = Money.of(1, "EUR");
-        MockProduct p1 = new MockProduct("sku1", "name1", eans1, m1);
-        MockProduct moneyless = new MockProduct("sku1", "name1", eans1, null);
+        MockProduct p1 = new MockProduct("sku1", "name1", eans1, m1,true);
+        MockProduct moneyless = new MockProduct("sku1", "name1", eans1, null,true);
         List<IProduct> p1s = new ArrayList<>();
         p1s.add(p1);
         List<IProduct> mls = new ArrayList<>();

@@ -93,7 +93,7 @@ public class CartControllerTest {
         List<IProduct> products = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("ean1");
-        products.add(new ProductModel("sku", "name", eans,Money.of(1,"EUR")));
+        products.add(new ProductModel("sku", "name", eans,Money.of(1,"EUR"),true));
 
         ret.add(new CartModel("c1", products));
         ret.add(new CartModel("c2", products));

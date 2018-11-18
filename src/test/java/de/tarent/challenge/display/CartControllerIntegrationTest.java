@@ -44,8 +44,8 @@ public class CartControllerIntegrationTest {
         List<ProductModel> p1Andp2 = new ArrayList<>();
         Set<String> eans = new HashSet<>();
         eans.add("ean1");
-        ProductModel p1 = new ProductModel("skuTest1", "name1", eans, Money.of(1.0, "EUR"));
-        ProductModel p2 = new ProductModel("skuTest2", "name2", eans, Money.of(1.0, "EUR"));
+        ProductModel p1 = new ProductModel("skuTest1", "name1", eans, Money.of(1.0, "EUR"),true);
+        ProductModel p2 = new ProductModel("skuTest2", "name2", eans, Money.of(1.0, "EUR"),true);
         products1.add(p1);
         p1Andp2.add(p1);
         p1Andp2.add(p2);

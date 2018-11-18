@@ -22,5 +22,7 @@ public class ProductModelTest {
         ProductTest pt = new ProductTest();
         pt.ProductCreateBySettings();
         pt.ProductCreateByIProduct();
+        pt.equalTest();
+        pt.AvailaibiltyTest();
     }
 }

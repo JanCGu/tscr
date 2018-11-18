@@ -42,6 +42,11 @@ public class Product implements IProduct {
      */
     private Money price;
     
+    /**
+     * Indicates if the product is available.
+     */
+    private boolean available;
+    
     
 
     private Product() {
@@ -53,12 +58,14 @@ public class Product implements IProduct {
      * @param in the IProduct to be converted.
      */
     public Product(IProduct in) throws IllegalArgumentException {
-        this(in.getSku(), in.getName(), in.getEans(),in.getPrice());
+        this(in.getSku(), in.getName(), in.getEans(),in.getPrice(), in.getAvailable());
     }
 
     /**
      * Initalises the Product with a sku, name and eans. No sku name or eans may
      * be empty. Eans may not contain a empty string.
+     * 
+     * This product does not have a price and therefore it isn't available.
      *
      * @param sku the stock keeping unit of the product
      * @param name the name of the product
@@ -67,15 +74,16 @@ public class Product implements IProduct {
      * not given.
      */
     public Product(String sku, String name, Set<String> eans) throws IllegalArgumentException {
-        this(sku, name, eans, null);
+        this(sku, name, eans, null,false);
 
     }
 
-    public Product(String sku, String name, Set<String> eans, Money price) {
+    public Product(String sku, String name, Set<String> eans, Money price,  boolean availability) {
         this.sku = Check.nonEmpty(sku, "SKU may not be empty!"); //
         this.name = Check.nonEmpty(name, "Name may not be empty!");
         this.eans = Check.atLeastOne(eans,ean -> (ean == null || ean==""),"eans");
         this.price = checkAllowdPrice(price);
+        this.available=availability;
     }
 
     /**
@@ -141,6 +149,7 @@ public class Product implements IProduct {
                 .add("name", name)
                 .add("eans", eans)
                 .add("price", price)
+                .add("available",available)
                 .toString();
     }
 
@@ -151,5 +160,15 @@ public class Product implements IProduct {
     @Override
     public Money getPrice() {
         return price;
+    }
+
+    @Override
+    public void setAvailable(boolean availability) {
+        this.available = availability;
+    }
+
+    @Override
+    public boolean getAvailable() {
+        return available;
     }
 }

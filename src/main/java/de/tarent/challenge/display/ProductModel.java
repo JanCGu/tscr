@@ -25,8 +25,8 @@ public class ProductModel extends Product implements IProduct {
         super(sku, name, eans);
     }
 
-    public ProductModel(String sku, String name, Set<String> eans, Money price) {
-        super(sku, name, eans, price);
+    public ProductModel(String sku, String name, Set<String> eans, Money price, boolean available) {
+        super(sku, name, eans, price,available);
 
     }
 }

@@ -1,5 +1,7 @@
-package de.tarent.challenge.domain;
+package de.tarent.challenge.domain.General;
 
+import de.tarent.challenge.domain.ICart;
+import de.tarent.challenge.domain.IProduct;
 import java.util.List;
 import org.javamoney.moneta.Money;
 
@@ -72,7 +74,7 @@ public class MockCart implements ICart {
 
     @Override
     public void checkOut() {
-        CheckOutSwitch=true;
+        CheckOutSwitch = true;
     }
 
 }

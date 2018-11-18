@@ -4,7 +4,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
 import de.tarent.challenge.domain.IProduct;
 import de.tarent.challenge.domain.Product;
-import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.javamoney.moneta.Money;
 
@@ -35,17 +33,20 @@ public class ProductDTO implements IProduct {
      * Only one product with a sku is allowed to exist. Issue #1
      */
     @Id
-    protected String sku;
+    private String sku;
 
-    protected String name;
+    private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Product_Eans", joinColumns = @JoinColumn(name = "product_sku"))
-    protected Set<String> eans;
+    private Set<String> eans;
 
     @Column(length = 65335)//Blob
     @Basic(optional = true)
-    protected Money price;
+    private Money price;
+
+    @Basic(optional = false)
+    private boolean available;
 
     /**
      * A ProdcutDTO should not be initalised empty as it cirumvents security
@@ -61,8 +62,8 @@ public class ProductDTO implements IProduct {
         setWithProduct(p);
     }
 
-    public ProductDTO(String sku, String name, Set<String> eans, Money price) throws IllegalArgumentException {
-        Product p = new Product(sku, name, eans, price);//Uses the functionality of the domain model to validate the input and create a dto.
+    public ProductDTO(String sku, String name, Set<String> eans, Money price, boolean availability) throws IllegalArgumentException {
+        Product p = new Product(sku, name, eans, price, availability);//Uses the functionality of the domain model to validate the input and create a dto.
         setWithProduct(p);
     }
 
@@ -71,6 +72,7 @@ public class ProductDTO implements IProduct {
         this.name = p.getName();
         this.eans = p.getEans();
         this.price = p.getPrice();
+        this.available = p.getAvailable();
     }
 
     @Override
@@ -119,11 +121,22 @@ public class ProductDTO implements IProduct {
                 .add("name", name)
                 .add("eans", eans)
                 .add("price", price)
+                .add("available",available)
                 .toString();
     }
 
     @Override
     public Money getPrice() {
         return price;
+    }
+
+    @Override
+    public void setAvailable(boolean availability) {
+        this.available = availability;
+    }
+
+    @Override
+    public boolean getAvailable() {
+        return available;
     }
 }

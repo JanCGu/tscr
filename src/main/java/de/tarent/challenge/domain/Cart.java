@@ -166,6 +166,7 @@ public class Cart implements ICart {
                 .add("id", id)
                 .add("products", products)
                 .add("totalPrice", totalPrice)
+                .add("checkedOut",checkedOut)
                 .toString();
     }
 
