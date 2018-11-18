@@ -21,13 +21,13 @@ public class Product implements IProduct {
      * electronic use. It is a required non empty identifier.
      * https://de.wikipedia.org/wiki/Artikelnummer
      */
-    protected String sku;
+    private String sku;
 
     /**
      * The name of the product as it is called in the shop. It is a non empty
      * identifier.
      */
-    protected String name;
+    private String name;
 
     /**
      * The European article number for this product. At least one non null entry
@@ -35,12 +35,14 @@ public class Product implements IProduct {
      *
      * https://de.wikipedia.org/wiki/European_Article_Number
      */
-    protected Set<String> eans;
+    private Set<String> eans;
 
     /**
      * Stores how much the procut costs. Can only be null or greater than 0.
      */
-    protected Money price;
+    private Money price;
+    
+    
 
     private Product() {
     }

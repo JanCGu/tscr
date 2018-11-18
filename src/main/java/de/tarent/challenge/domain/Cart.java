@@ -24,7 +24,7 @@ public class Cart implements ICart {
     private List<IProduct> products;
 
     private Money totalPrice;
-    
+
     private boolean checkedOut;
 
     public Cart(String id, List<IProduct> products) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
@@ -32,12 +32,12 @@ public class Cart implements ICart {
         this.id = Check.nonEmpty(id, "The Id may not be empty!");
         this.products = new ArrayList<>(Check.atLeastOne(products, p -> (p == null), "products"));
         calculateTotalPrice();
-        checkedOut=false;
+        checkedOut = false;
     }
 
     public Cart(ICart in) {
         this(in.getId(), in.getProducts());
-        checkedOut=in.getCheckedOut();
+        checkedOut = in.getCheckedOut();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Cart implements ICart {
      * @return
      */
     @Override
-    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException,IllegalAccessException {
+    public boolean removeProducts(List<IProduct> toRemove) throws IllegalArgumentException, IllegalAccessException {
         if (toRemove == null) {
             return true;
         }
@@ -81,7 +81,7 @@ public class Cart implements ICart {
      * @return
      */
     @Override
-    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException,IllegalAccessException {
+    public boolean addProducts(List<IProduct> toAdd) throws IllegalArgumentException, IllegalAccessException {
         if (toAdd == null) {
             return true;
         }
@@ -100,10 +100,11 @@ public class Cart implements ICart {
      * @return The return value of aciton.
      */
     private boolean changeProducts(List<IProduct> toModify, BiFunction<List<IProduct>, List<IProduct>, Boolean> action)
-            throws IllegalArgumentException,IllegalAccessException {
-        if(checkedOut)
+            throws IllegalArgumentException, IllegalAccessException {
+        if (checkedOut) {
             throw new IllegalAccessException("The cart is checked out and the product list can't be changed.");
-        
+        }
+
         ensureProducts(toModify);
         boolean ret = action.apply(products, toModify);
         calculateTotalPrice();
@@ -175,7 +176,7 @@ public class Cart implements ICart {
 
     @Override
     public void checkOut() {
-        checkedOut=true;
+        checkedOut = true;
     }
 
 }

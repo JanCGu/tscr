@@ -47,7 +47,7 @@ public class CartDTO implements ICart {
 
     @Column(length = 65335)//Blob
     @Basic(optional = true)
-    protected Money totalPrice;
+    private Money totalPrice;
     
     private boolean checkedOut;
 

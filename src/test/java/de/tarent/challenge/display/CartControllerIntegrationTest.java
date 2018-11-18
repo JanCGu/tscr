@@ -33,12 +33,12 @@ public class CartControllerIntegrationTest {
     private ProductController pc;
 
     /**
-     * Tests the creat, read, update and delete operations for a card.
+     * Tests the creat, read, update and delete operations for a card.This is the Integration test to the Issue #4.
      *
-     * This is the Integration test to the Issue #4.
+     * @throws javax.naming.ServiceUnavailableException
      */
     @Test
-    public void testCRUDofCartWithExsitingProduct() throws ServiceUnavailableException {
+    public void testCRUDofCartWithExsitingProduct() throws ServiceUnavailableException, IllegalAccessException {
         //setup
         List<ProductModel> products1 = new ArrayList<>();
         List<ProductModel> p1Andp2 = new ArrayList<>();
