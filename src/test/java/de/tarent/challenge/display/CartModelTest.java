@@ -22,5 +22,6 @@ public class CartModelTest {
         ct.testVariableCreation();
         ct.testOperationOnCart();
         ct.testCheckOut();
+        ct.testNonAvailableProducts();
     }
 }
