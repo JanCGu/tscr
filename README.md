@@ -1,5 +1,5 @@
 # tscr
-Tarent Senior Challenge Retail
+Tarent Senior Challenge Retail. Important: The project was delivered with an Gradle setup, but was migrated to Maven.
 
 
 ## Application Tasks
